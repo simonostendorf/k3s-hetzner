@@ -23,233 +23,160 @@ This repo covers:
 * Setup argo-cd to automaticly deploy workloads as part of the ci/cd pipeline
 
 # Steps
-1. [Prerequisites](#prerequisites)  
-1.1. [Hetzner](#prerequisites-hetzner)  
-1.1.1. [create cloud account](#prerequisites-hetzner-account)  
-1.1.2. [create project](#prerequisites-hetzner-project)  
-1.1.3. [create API token(s)](#prerequisites-hetzner-token)  
-1.1.4. [upload ssh-key(s)](#prerequisites-hetzner-sshkeys)  
-1.2. [container repository](#prerequisites-containerrepo)  
-1.2.1. [create account](#prerequisites-containerrepo-account)  
-1.2.2. [create token](#prerequisites-containerrepo-token)  
-1.3. [dns provider](#prerequisites-dns)  
-1.3.1. [create account](#prerequisites-dns-account)  
-1.3.2. [create token](#prerequisites-dns-token)  
-1.4. [Local machine](#prerequisites-local)  
-1.4.1. [hcloud](#prerequisites-local-hcloud)  
-1.4.1.1. [install hcloud](#prerequisies-local-hcloud-install)  
-1.4.1.2. [setup hcloud context](#prerequisies-local-hcloud-context)  
-1.4.2. [Helm](#prerequisites-local-helm)  
-2. [Installation](#installation)  
-2.1. [Hetzner](#installation-hetzner)  
-2.1.1. [create placement groups](#installation-hetzner-placementgroups)  
-2.1.2. [create private network](#installation-hetzner-privatenetwork)  
-2.1.3. [create servers](#installation-hetzner-servers)  
-2.1.4. [create load balancers](#installation-hetzner-loadbalancers)  
-2.2. [servers](#installation-servers)  
-2.2.1. [install updates](#installation-servers-updates)  
-2.2.2. [set timezone](#installation-servers-timezone)  
-2.2.3. [install packages](#installation-servers-packages)  
-2.3. [k3s](#installation-k3s)  
-2.3.1. [control-plane](#installation-k3s-controlplane)  
-2.3.1.1. [install first server](#installation-k3s-controlplane-first)  
-2.3.1.2. [install other servers](#installation-k3s-controlplane-others)  
-2.3.2. [setup kubectl](#installation-k3s-kubectl)  
-3. [Deployments](#deployment)  
-3.1. [cloud-controller-manager](#deployment-ccm)  
-3.1.1. [setup secret](#deployment-ccm-secret)  
-3.1.2. [deploy ccm](#deployment-ccm-deployment)  
-3.2. [cloud-volume driver](#deployment-hcloudcsi)  
-3.2.1. [setup secret](#deployment-hcloudcsi-secret)  
-3.2.2. [deploy hcloud-csi](#deployment-hcloudcsi-deployment)  
-3.3. [deploy upgrade-controller](#deployment-upgradecontroller)  
-3.4. [traefik](#deployment-traefik)  
-3.4.1. [prerequisites](#deployment-traefik-prerequisites)  
-3.4.2. [configure helm values](#deployment-traefik-configuration)  
-3.4.3. [deploy workload](#deployment-traefik-deployment)  
-3.4.4. [setup default middleware](#deployment-traefik-defaultmiddleware)  
-3.4.5. [dashboard](#deployment-traefik-dashboard)  
-3.4.5.1. [create basic auth](#deployment-traefik-dashboard-basicauth)  
-3.4.5.2. [setup middleware](#deployment-traefik-dashboard-middleware)  
-3.4.5.3. [create IngressRoute](#deployment-traefik-dashboard-ingressroute)  
-3.5. [cert-manager](#deployment-certmanager)  
-3.5.1. [prerequisites](#deployment-certmanager-prerequisites)  
-3.5.2. [configure helm values](#deployment-certmanager-configuration)  
-3.5.3. [deploy workload](#deployment-certmanager-deployment)  
-3.5.4. [certificates](#deployment-certmanager-certificates)  
-3.5.4.1. [create Cloudflare token](#deployment-certmanager-certificates-cloudflare)  
-3.5.4.2. [letsencrypt staging](#deployment-certmanager-certificates-letsencryptstaging)  
-3.5.4.2.1. [create CertificateIssuer](#deployment-certmanager-certificates-letsencryptstaging-issuer)  
-3.5.4.2.2. [create Certificate](#deployment-certmanager-certificates-letsencryptstaging-cert)  
-3.5.4.2.3. [add certificate to traefik](#deployment-certmanager-certificates-letsencryptstaging-traefik)  
-3.5.4.3. [letsencrypt production](#deployment-certmanager-certificates-letsencrypt)  
-3.5.4.3.1. [create CertificateIssuer](#deployment-certmanager-certificates-letsencrypt-issuer)  
-3.5.4.3.2. [create Certificate](#deployment-certmanager-certificates-letsencrypt-cert)  
-3.5.4.3.3. [add certificate to traefik](#deployment-certmanager-certificates-letsencrypt-traefik)  
-3.6. [deploy metrics-server](#deployment-metricsserver)  
-3.7. [cluster-autoscaler](#deployment-clusterautoscaler)  
-3.7.1. [create cloud-init configuration](#deployment-clusterautoscaler-cloudinit)  
-3.7.2. [create secret](#deployment-clusterautoscaler-secret)  
-3.7.3. [create autoscaler image](#deployment-clusterautoscaler-createimage)  
-3.7.4. [create repository secret](#deployment-clusterautoscaler-reposecret)  
-3.7.5. [configure deployment](#deployment-clusterautoscaler-configuration)  
-3.7.6. [deploy workload](#deployment-clusterautoscaler-deployment)  
-3.8. [example horizontal pod autoscaler](#deployment-hpa)  
-3.8.1. [example application](#deployment-hpa-app)  
-3.8.2. [scale pods](#deployment-hpa-scale)  
-3.8.3. [delete deployment](#deployment-hpa-delete)  
+1. [Prerequisites](#1-prerequisites)  
+1.1. [Hetzner](#11-hetzner)  
+1.1.1. [create cloud account](#111-create-cloud-account)  
+1.1.2. [create project](#112-create-project)  
+1.1.3. [create API token(s)](#113-create-api-tokens)  
+1.1.4. [upload ssh-key(s)](#113-upload-ssh-keys)  
+1.2. [container repository](#12-container-repository)  
+1.2.1. [create account](#121-create-account)  
+1.2.2. [create token](#122-create-token)  
+1.3. [dns provider](#13-dns-provider)  
+1.3.1. [create account](#131-create-account)  
+1.3.2. [create token](#132-create-token)  
+1.4. [Local machine](#13-local-machine)  
+1.4.1. [hcloud](#141-hcloud)  
+1.4.1.1. [install hcloud](#1411-install-hcloud)  
+1.4.1.2. [setup hcloud context](#1412-setup-hcloud-context)  
+1.4.2. [Helm](#142-helm)  
+1.4.3. [kubectl](#143-kubectl)  
+2. [Installation](#2-installation)  
+2.1. [Hetzner](#21-hetzner)  
+2.1.1. [create placement groups](#211-create-placement-groups)  
+2.1.2. [create private network](#212-create-private-network)  
+2.1.3. [create servers](#213-create-servers)  
+2.1.4. [create load balancers](#214-create-load-balancers)  
+2.2. [servers](#22-servers)  
+2.2.1. [install updates](#221-install-updates)  
+2.2.2. [set timezone](#222-set-timezone)  
+2.2.3. [install packages](#223-install-packages)  
+2.3. [k3s](#23-k3s)  
+2.3.1. [control-plane](#231-control-plane)  
+2.3.1.1. [install first server](#2311-install-first-server)  
+2.3.1.2. [install other servers](#2312-install-other-servers)  
+2.3.2. [setup kubectl](#232-setup-kubectl)  
+3. [Deployments](#3-deployments)  
+3.1. [cloud-controller-manager](#31-cloud-controller-manager)  
+3.1.1. [setup secret](#311-setup-secret)  
+3.1.2. [deploy ccm](#312-deploy-ccm)  
+3.2. [cloud-volume driver](#32-cloud-volume-driver)  
+3.2.1. [setup secret](#321-setup-secret)  
+3.2.2. [deploy hcloud-csi](#322-deploy-hcloud-csi)  
+3.3. [deploy upgrade-controller](#33-deploy-upgrade-controller)  
+3.4. [traefik](#34-traefik)  
+3.4.1. [prerequisites](#341-prerequisites)  
+3.4.2. [configure helm values](#342-configure-helm-values)  
+3.4.3. [deploy workload](#343-deploy-workload)  
+3.4.4. [setup default middleware](#344-setup-default-middleware)  
+3.4.5. [dashboard](#345-dashboard)  
+3.4.5.1. [create basic auth](#3451-create-basic-auth)  
+3.4.5.2. [setup middleware](#3452-setup-middleware)  
+3.4.5.3. [create IngressRoute](#34543-create-ingressroute)  
+3.5. [cert-manager](#35-cert-manager)  
+3.5.1. [prerequisites](#351-prerequisites)  
+3.5.2. [configure helm values](#352-configure-helm-values)  
+3.5.3. [deploy workload](#353-deploy-workload)  
+3.5.4. [certificates](#354-certificates)  
+3.5.4.1. [create Cloudflare token](#3541-create-cloudflare-token)  
+3.5.4.2. [letsencrypt staging](#3542-letsencrypt-staging)  
+3.5.4.2.1. [create CertificateIssuer](#35421-create-certificateissuer)  
+3.5.4.2.2. [create Certificate](#35422-create-certificate)  
+3.5.4.2.3. [add certificate to traefik](#35423-add-certificate-to-traefik)  
+3.5.4.3. [letsencrypt production](#3543-letsencrypt-production)  
+3.5.4.3.1. [create CertificateIssuer](#35431-create-certificateissuer)  
+3.5.4.3.2. [create Certificate](#35432-create-certificate)  
+3.5.4.3.3. [add certificate to traefik](#35433-add-certificate-to-traefik)  
+3.6. [deploy metrics-server](#36-deploy-metrics-server)  
+3.7. [cluster-autoscaler](#37-cluster-autoscaler)  
+3.7.1. [create cloud-init configuration](#371-create-cloud-init-configuration)  
+3.7.2. [create secret](#372-create-secret)  
+3.7.3. [create autoscaler image](#373-create-autoscaler-image)  
+3.7.4. [create repository secret](#374-create-repository-secret)  
+3.7.5. [configure deployment](#375-configure-deployment)  
+3.7.6. [deploy workload](#376-deploy-workload)  
+3.8. [example horizontal pod autoscaler](#38-example-horizontal-pod-autoscaler)  
+3.8.1. [example application](#381-example-application)  
+3.8.2. [scale pods](#382-scale-pods)  
+3.8.3. [delete deployment](#383-delete-deployment)  
 
-<a name="prerequisites"></a>
 # 1. Prerequisites
-<a name="prerequisites-hetzner"></a>
 ## 1.1. Hetzner
-<a name="prerequisites-hetzner-account"></a>
 ### 1.1.1. create cloud account
-<a name="prerequisites-hetzner-project"></a>
 ### 1.1.2. create project
-<a name="prerequisites-hetzner-token"></a>
 ### 1.1.3. create API token(s)
-<a name="prerequisites-hetzner-sshkeys"></a>
 ### 1.1.4. upload ssh-key(s)
-<a name="prerequisites-contrainerrepo"></a>
 ## 1.2. container repository
-<a name="prerequisites-containerrepo-account"></a>
 ### 1.2.1. create account
-<a name="prerequisites-containerrepo-token"></a>
 ### 1.2.2. create token
-<a name="prerequisites-dns"></a>
 ## 1.3. dns provider
-<a name="prerequisites-dns-account"></a>
 ### 1.3.1. create account
-<a name="prerequisites-dns-token"></a>
 ### 1.3.2. create token
-<a name="prerequisites-local"></a>
 ## 1.4. local machine
-<a name="prerequisites-local-hcloud"></a>
 ### 1.4.1. hcloud
-<a name="prerequisites-local-hcloud-install"></a>
 #### 1.4.1.1. install hcloud
-<a name="prerequisites-local-hcloud-context"></a>
 #### 1.4.1.2. setup hcloud context
-<a name="prerequisites-local-helm"></a>
 ### 1.4.2. Helm
+### 1.4.3. kubectl
 
-<a name="installation"></a>
 # 2. Installation
-<a name="installation-hetzner"></a>
 ## 2.1. Hetzner
-<a name="installation-hetzner-placementgroups"></a>
 ### 2.1.1. create placement groups
-<a name="installation-hetzner-privatenetwork"></a>
 ### 2.1.2. create private network
-<a name="installation-hetzner-servers"></a>
 ### 2.1.3. create servers
-<a name="installation-hetzner-loadbalancers"></a>
 ### 2.1.4. create load balancers
-<a name="installation-servers"></a>
 ## 2.2. servers
-<a name="installation-servers-updates"></a>
 ### 2.2.1. install updates
-<a name="installation-servers-timezone"></a>
 ### 2.2.2. set timezone
-<a name="installation-servers-packages"></a>
 ### 2.2.3. install packages
-<a name="installation-k3s"></a>
 ## 2.3. k3s
-<a name="installation-k3s-controlplane"></a>
 ### 2.3.1. control-plane
-<a name="installation-k3s-controlplane-first"></a>
 #### 2.3.1.1. install first server
-<a name="installation-k3s-controlplane-others"></a>
 #### 2.3.1.2. install other servers
-<a name="installation-k3s-kubectl"></a>
 ### 2.3.2. setup kubectl
 
-<a name="deployment"></a>
 # 3. Deployment
-<a name="deployment-ccm"></a>
 ## 3.1. cloud-controller-manager
-<a name="deployment-ccm-secret"></a>
 ### 3.1.1. setup secret
-<a name="deployment-ccm-deployment"></a>
 ### 3.1.2. deploy ccm
-<a name="deployment-hcloudcsi"></a>
 ## 3.2. cloud-volume driver
-<a name="deployment-hcloudcsi-secret"></a>
 ### 3.2.1. setup secret
-<a name="deployment-hcloudcsi-deployment"></a>
 ### 3.2.2. deploy hcloud-csi
-<a name="deployment-upgradecontroller"></a>
 ## 3.3. deploy upgrade-controller
-<a name="deployment-traefik"></a>
 ## 3.4. traefik
-<a name="deployment-traefik-prerequisites"></a>
 ### 3.4.1. prerequisites
-<a name="deployment-traefik-configuration"></a>
 ### 3.4.2. configure helm values
-<a name="deployment-traefik-deployment"></a>
 ### 3.4.3. deploy workload
-<a name="deployment-traefik-defaultmiddleware"></a>
 ### 3.4.4. setup default middleware
-<a name="deployment-traefik-dashboard"></a>
 ### 3.4.5. dashboard
-<a name="deployment-traefik-dashboard-basicauth"></a>
 #### 3.4.5.1. create basic auth
-<a name="deployment-traefik-dashboard-middleware"></a>
 #### 3.4.5.2. setup middleware
-<a name="deployment-traefik-dashboard-ingressroute"></a>
 #### 3.4.5.3. create IngressRoute
-<a name="deployment-certmanager"></a>
 ## 3.5. cert-manager
-<a name="deployment-certmanager-prerequisites"></a>
 ### 3.5.1. prerequisites
-<a name="deployment-certmanager-configuration"></a>
 ### 3.5.2. configure helm values
-<a name="deployment-certmanager-deployment"></a>
 ### 3.5.3. deploy workload
-<a name="deployment-certmanager-certificates"></a>
 ### 3.5.4. certificates
-<a name="deployment-certmanager-certificates-cloudflare"></a>
 #### 3.5.4.1. create Cloudflare token
-<a name="deployment-certmanager-certificates-letsencryptstaging"></a>
 #### 3.5.4.2. letsencrypt staging
-<a name="deployment-certmanager-certificates-letsencryptstaging-issuer"></a>
 ##### 3.5.4.2.1. create CerificateIssuer
-<a name="deployment-certmanager-certificates-letsencryptstaging-cert"></a>
 ##### 3.5.4.2.2. create Certificate
-<a name="deployment-certmanager-certificates-letsencryptstaging-traefik"></a>
 ##### 3.5.4.2.3. add certificate to traefik
-<a name="deployment-certmanager-certificates-letsencrypt"></a>
 #### 3.5.4.3. letsencrypt production
-<a name="deployment-certmanager-certificates-letsencrypt-issuer"></a>
 ##### 3.5.4.3.1. create CerificateIssuer
-<a name="deployment-certmanager-certificates-letsencrypt-cert"></a>
 ##### 3.5.4.3.2. create Certificate
-<a name="deployment-certmanager-certificates-letsencrypt-traefik"></a>
 ##### 3.5.4.3.3. add certificate to traefik
-<a name="deployment-metricsserver"></a>
 ## 3.6. deploy metrics-server
-<a name="deployment-clusterautoscaler"></a>
 ## 3.7. cluster-autoscaler
-<a name="deployment-clusterautoscaler-cloudinit"></a>
 ### 3.7.1. create cloud-init configuration
-<a name="deployment-clusterautoscaler-secret"></a>
 ### 3.7.2. create secret
-<a name="deployment-clusterautoscaler-createimage"></a>
 ### 3.7.3. create autoscaler image
-<a name="deployment-clusterautoscaler-reposecret"></a>
 ### 3.7.4. create repository secret
-<a name="deployment-clusterautoscaler-configuration"></a>
 ### 3.7.5. configure deployment
-<a name="deployment-clusterautoscaler-deployment"></a>
 ### 3.7.6. deploy workload
-<a name="deployment-hpa"></a>
 ## 3.8. example horizontal pod autoscaler
-<a name="deployment-hpa-app"></a>
 ### 3.8.1. example application
-<a name="deployment-hpa-scale"></a>
 ### 3.8.2. scale pods
-<a name="deployment-hpa-delete"></a>
 ### 3.8.3. delete deployment
 
 # Credits
