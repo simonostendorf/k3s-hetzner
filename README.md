@@ -35,7 +35,7 @@ This repo covers:
 1.3. [dns provider](#13-dns-provider)  
 1.3.1. [create account](#131-create-account)  
 1.3.2. [create token](#132-create-token)  
-1.4. [Local machine](#13-local-machine)  
+1.4. [Local machine](#14-local-machine)  
 1.4.1. [hcloud](#141-hcloud)  
 1.4.1.1. [install hcloud](#1411-install-hcloud)  
 1.4.1.2. [setup hcloud context](#1412-setup-hcloud-context)  
