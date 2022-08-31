@@ -15,3 +15,9 @@ This repo covers:
 * Deploy metrics-server to collect metrics from pods and nodes
 * Setup cluster autoscaler with hetzner cloud provider to autoscale worker nodes if running out of compute power
 * Give an example for horizontal pod autoscaling to start new pods if compute power from one pod exceeded
+
+## ToDo
+* Deploy kube-prometheus-stack (prometheus, grafana, alertmanager, node-exporter etc.) to collect and visualize metrics from nodes and pods
+* Setup vertical pod autoscaler to automaticly update pod resources requests and limits
+* Setup goldilocks as dashboard for the vertical pod autoscaler
+* Setup argo-cd to automaticly deploy workloads as part of the ci/cd pipeline
