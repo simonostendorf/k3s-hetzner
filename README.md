@@ -21,3 +21,9 @@ This repo covers:
 * Setup vertical pod autoscaler to automaticly update pod resources requests and limits
 * Setup goldilocks as dashboard for the vertical pod autoscaler
 * Setup argo-cd to automaticly deploy workloads as part of the ci/cd pipeline
+
+## Credits
+Huge thank you to many people and git repos where I got my information and commands from.  
+Special thanks to:
+* [Techno Tim](https://github.com/techno-tim)
+* [The DevOps Guy](https://github.com/marcel-dempers)
