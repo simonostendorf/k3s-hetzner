@@ -111,7 +111,7 @@ The autoscale cluster should sit in a **plain cloud project**.
 Login at [console.hetzner.cloud/projects](https://console.hetzner.cloud/projects) and create new project.  
 The name of the project doesn't matter.  
 
-<img src="./docs/img/212-create-project.png" width=50%>
+<img src="./docs/img/112-create-project.png" width=50%>
 
 ### 1.1.3. create API token(s)
 Open the project and go to security and the api-tokens tab.  
@@ -126,7 +126,7 @@ I created the following tokens:
 All tokens need read and write access.  
 Save them in a **secure place** you will need them later and cant view them another time inside the webpanel.
 
-<img src="./docs/img/213-create-api-tokens.png" width=50%>
+<img src="./docs/img/113-create-api-tokens.png" width=50%>
 
 ### 1.1.4. upload ssh-key(s)
 Stay inside the security part of the hetzner webinterface and open the tab for the ssh-keys.  
@@ -135,8 +135,23 @@ They will be later added to the servers when we create them.
 If you want to create a new ssh-key you can use `ssh-keygen`. 
 
 ## 1.2. container repository
+You need an account at a container repository. You can use for example the [docker-hub](https://hub.docker.com/) or the [github-container-repository]().  
+In this example, I will use the docker-hub. 
+
 ### 1.2.1. create account
+First, create an account at your container-repository provider.  
+If you want to use a docker-hub account, you can register [here](https://hub.docker.com/signup).
+
+<img src="./docs/img/121-create-account.png" width=30%>
+
 ### 1.2.2. create token
+If you want to use private repositories you have to create an access token to pull the private images from the kubernetes host.  
+
+If you use docker, move to your [security-profile-page](https://hub.docker.com/settings/security) and create an access-token.  
+You can name the token whatever you want. The token only needs read access to pull the images. Be shure to save the token in a save place because you need it later in the setup.  
+
+<img src="./docs/img/122-create-token.png" width=40%>
+
 ## 1.3. dns provider
 ### 1.3.1. create account
 ### 1.3.2. create token
