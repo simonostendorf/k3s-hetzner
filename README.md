@@ -186,7 +186,7 @@ You can install hcloud with [homebrew](https://brew.sh/).
 Run `brew install hcloud` to install hcloud to your system. 
 
 #### 1.4.1.2. setup hcloud context
-To communicate with your hetzner cloud project from step [1.1.2]() you created an api-token in step [1.1.3](). In my example i named it `hcloud-cli`.  
+To communicate with your hetzner cloud project from step [1.1.2](#112-create-project) you created an api-token in step [1.1.3](#113-create-api-tokens). In my example i named it `hcloud-cli`.  
 To link the cloud project with the hcloud application by using the api-token, you have to create an hcloud-context. You can manage different cloud-projects with different contexts.  
 To create a new context type `hcloud context create [NAME]` and paste your previously saved api-token.  
 You can see all contexts with `hcloud context list` and set your used context with `hcloud context use [NAME]`. 
