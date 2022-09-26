@@ -34,7 +34,8 @@ This repo covers:
 1.2.2. [create token](#122-create-token)  
 1.3. [dns provider](#13-dns-provider)  
 1.3.1. [create account](#131-create-account)  
-1.3.2. [create token](#132-create-token)  
+1.3.2. [setup sites and dns records](#132-setup-sites-and-dns-records)  
+1.3.3. [create token](#133-create-token)  
 1.4. [Local machine](#14-local-machine)  
 1.4.1. [hcloud](#141-hcloud)  
 1.4.1.1. [install hcloud](#1411-install-hcloud)  
@@ -153,14 +154,50 @@ You can name the token whatever you want. The token only needs read access to pu
 <img src="./docs/img/122-create-token.png" width=40%>
 
 ## 1.3. dns provider
+To use ssl-certificates later, we will use the cert-manager from kubernetes with lets-encrypt certificates. To use this, we need a dns provider for our domain that supports dns01-validation via acme. You can find supported dns providers in the [documentation from the kubernetes cert-manager](https://cert-manager.io/docs/configuration/acme/dns01/#supported-dns01-providers).  
+In this tutorial i will use [CloudFlare](https://cloudflare.com)
+
 ### 1.3.1. create account
-### 1.3.2. create token
+First, you have to create an account at your dns-provider.  
+If you want to use CloudFlare, you can create an account [here](https://dash.cloudflare.com/sign-up). 
+
+<img src="./docs/img/131-create-account.png" width=40%>
+
+### 1.3.2. setup sites and dns records
+After creating an account you have to add your domain as a new site to your dns provider.  
+After that you can import your old dns entries or add new ones.  
+As final step you need to change the nameservers from your domain. You can do this normally in the control panel from your domain hoster.  
+Because these steps are different from dns provider to dns provider and different from domain hoster to domain hoster, I will skip this part in this tutorial. 
+
+### 1.3.3. create token
+To use the dns01-challenge, the acme client will create a txt dns-record for you to validate that you own the requested domain. To change the dns settings (add an entry) you have to create an access token for the acme client.  
+
+If you use CloudFlare, move to your [api-token-profile-page](https://dash.cloudflare.com/profile/api-tokens) and create a new api-token. Dont use the global api token, you need a new api-token for your specific dns-zone.   
+As token-template you can use the edit-dns-zone setting. In the next step you have to select your site you have created in step [1.3.2](#132-setup-sites-and-dns-records). Remember to save the token, it will not be shown again. 
+
 ## 1.4. local machine
+In the last preparation step, we have to setup our local machine. As local machine you need a linux-host. You can install it directy to your host, use a virtual machine or - as i do - use wsl, the windows subsystem for linux.  
+
 ### 1.4.1. hcloud
+To control the hetzner cloud from the command line you need hcloud, a tool by hetzner. You can find more information [here](https://github.com/hetznercloud/cli).
+
 #### 1.4.1.1. install hcloud
+You can install hcloud with [homebrew](https://brew.sh/).  
+Run `brew install hcloud` to install hcloud to your system. 
+
 #### 1.4.1.2. setup hcloud context
+To communicate with your hetzner cloud project from step [1.1.2]() you created an api-token in step [1.1.3](). In my example i named it `hcloud-cli`.  
+To link the cloud project with the hcloud application by using the api-token, you have to create an hcloud-context. You can manage different cloud-projects with different contexts.  
+To create a new context type `hcloud context create [NAME]` and paste your previously saved api-token.  
+You can see all contexts with `hcloud context list` and set your used context with `hcloud context use [NAME]`. 
+
 ### 1.4.2. Helm
+To install packages to kubernetes you need helm on your local machine.  
+To install helm, visit the [official installation manual](https://helm.sh/docs/intro/install/#from-script). 
+
 ### 1.4.3. kubectl
+To administrate the kubernetes cluster you also need kubectl, a command line interface to control kubernetes clusters.  
+You can visit the [kubernets documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-binary-with-curl-on-linux) for installation steps.  
 
 # 2. Installation
 ## 2.1. Hetzner
