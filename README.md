@@ -119,9 +119,9 @@ Open the project and go to security and the api-tokens tab.
 Here you have to create **at least one api-token**.  
 I created several ones to keep the different services seperated and logged what which service does. 
 I created the following tokens:
-* `hcloud-cli` (used for hcloud cli application on local machine)
-* `hcloud-csi` (used for persistent volume driver)
-* `ccm` (used for cloud-controller-manager)
+* `command-line-interface` (used for hcloud cli application on local machine)
+* `container-storage-interface` (used for persistent volume driver)
+* `cloud-controller-manager` (used for cloud-controller-manager)
 * `cluster-autoscaler` (used for cluster autoscaler)  
 
 All tokens need read and write access.  
@@ -186,7 +186,7 @@ You can install hcloud with [homebrew](https://brew.sh/).
 Run `brew install hcloud` to install hcloud to your system. 
 
 #### 1.4.1.2. setup hcloud context
-To communicate with your hetzner cloud project from step [1.1.2](#112-create-project) you created an api-token in step [1.1.3](#113-create-api-tokens). In my example i named it `hcloud-cli`.  
+To communicate with your hetzner cloud project from step [1.1.2](#112-create-project) you created an api-token in step [1.1.3](#113-create-api-tokens). In my example i named it `command-line-interface`.  
 To link the cloud project with the hcloud application by using the api-token, you have to create an hcloud-context. You can manage different cloud-projects with different contexts.  
 To create a new context type `hcloud context create [NAME]` and paste your previously saved api-token.  
 You can see all contexts with `hcloud context list` and set your used context with `hcloud context use [NAME]`. 
@@ -417,14 +417,116 @@ scp root@CONTROLPLANE_PUBLIC_IP_HERE:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 ```
 Please replace the `CONTROLPLANE_PUBLIC_IP_HERE` with the public ip of one of the controlplane hosts.
 
+To replace the localhost ip used in the kubectl file with the public ip of the loadbalancer run the following command. Please replace the `CONTROLPLANE_PUBLIC_IP_HERE` with the public ip of the loadbalancer for the controlplane.
+```bash
+sed -i 's/127.0.0.1/167.235.216.181/' ~/.kube/config
+```
+
+As last step change the access rights to the kubeconfig file. Otherwise kubectl will not use the config file because the access rights are too open. 
+```bash
+chmod 600 ~/.kube/config
+```
+
+To check if the communication between the hosts and the local machine works, run the following command on your local machine:
+```bash
+kubectl get nodes
+```
+You should see 3 controlplane nodes in the output. 
+
 # 3. Deployment
+After the steps above we got a working kubertenes cluster with a loadbalanced, high-available controlplane and communication between our local machine and the cluster.  
+In this step we will setup all needed deployments for the cluster to work poperly. This step will not cover the deployment of the applications itself, but only the needed infrastructure.
+
 ## 3.1. cloud-controller-manager
+The first step is to deploy the cloud-controller-manager. This is needed to manage the cloud resources like loadbalancers, volumes and so on. This is the integration of the hetzner cloud api into the kubernets cluster. 
+
 ### 3.1.1. setup secret
+The first step is to create a kubernetes secret with our cloud api token that the cloud-controller-manager will use to authenticate against the hetzner cloud api.  
+We have created the token in step [1.2.1](#121-create-cloud-api-token).  
+In my example configuration I have named the token `cloud-controller-manager` in the hetzner cloud. 
+
+You also need the network-id from your private network. To get the id you can either copy the id from the hetzner cloud webinterface or copy the id from the following command:
+```bash
+hcloud network list
+```
+
+Copy the [secrets file](deployments/ccm/secret.yml) for the cloud-controller-manager to your local machine and replace the `CLOUD_API_TOKEN_HERE` with the token you created in step [1.2.1](#121-create-cloud-api-token) (in this example named as `cloud-controller-manager`) and the `NETWORK_ID_HERE` with the id of your private network as explaned above.  
+
+Apply the secret to the kubernetes cluster by running the following command on your local machine:
+```bash
+kubectl apply -f deployments/ccm/secret.yml
+```
+
 ### 3.1.2. deploy ccm
+Download the latest version of the cloud controller manager deployment into the `deployments/ccm` folder on your local machine:
+```bash
+wget https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml -O deployments/ccm/deployment.yml
+```
+
+Edit the deployment file and replace the secret name and the pod ip range. You can use the following commands to do this:
+```bash
+sed -i 's/name: hcloud$/name: hetzner_cloud_controller_manager/' deployments/ccm/deployment.yml
+sed -i 's/10.244.0.0/10.100.0.0/' deployments/ccm/deployment.yml
+```
+
+You can deploy the cloud controller manager with the following command from your local machine:
+```bash
+kubectl apply -f deployments/ccm/deployment.yml
+```
+
+After this step you should see pods comming up in the cluster. To validate the starting pods, run the following command:
+```bash
+kubectl get pods -n kube-system
+```
+You have to use the kube-system namespace here, because the cloud-controller-manager is deployed in this namespace.
+
 ## 3.2. cloud-volume driver
+To use hetzner cloud volumes as persistent volume claims in kubernetes, we need to deploy the cloud-volume driver. The driver will than handle the volumes claims and create the volumes in hetzner cloud.  
+You can find more about the driver on the official [hetzner-csi](https://github.com/hetznercloud/csi-driver) github repository. 
+
 ### 3.2.1. setup secret
+Similar to the ccm in step [3.1.1](#311-setup-secret), we need to create a secret for the cloud-volume driver. Replace the `CLOUD_API_TOKEN_HERE` in the [secret file](deployments/csi/secret.yml) with the token you created in step [1.2.1](#121-create-cloud-api-token) (in this example named as `container-storage-interface`).
+
+Apply the secret to the kubernetes cluster by running the following command on your local machine:
+```bash
+kubectl apply -f deployments/csi/secret.yml
+```
+
 ### 3.2.2. deploy hcloud-csi
+Download the latest version of the storage driver deployment into the `deployments/csi` folder on your local machine:
+```bash
+wget wget https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml -O deployments/csi/deployment.yml
+```
+
+Edit the deployment file and replace the secret name. You can use the following command to do this:
+```bash
+sed -i 's/^.\{18\}name: hcloud-csi$/                  name: hetzner_container_storage_interface/' deployments/csi/deployment.yml
+```
+
+You can deploy the cloud controller manager with the following command from your local machine:
+```bash
+kubectl apply -f deployments/ccm/deployment.yml
+```
+
+After this step you should see pods comming up in the cluster. To validate the starting pods, run the following command:
+```bash
+kubectl get pods -n kube-system
+```
+You have to use the kube-system namespace here, because the volume-driver is deployed in this namespace.
+
 ## 3.3. deploy upgrade-controller
+To upgrade the kubernetes cluster, we need to deploy the upgrade-controller. This controller will check for new kubernetes versions and upgrade the cluster if a new version is available. You can deploy different update strategies to the cluster to keep a working cluster during the upgrade.
+
+You can download the latest version of the upgrade-controller deployment into the `deployments/upgrade-controller` folder on your local machine:
+```bash
+wget https://github.com/rancher/system-upgrade-controller/releases/latest/download/system-upgrade-controller.yaml -O deployments/upgrade-controller/deployment.yml
+```
+
+You can deploy the upgrade-controller with the following command from your local machine:
+```bash
+kubectl apply -f deployments/upgrade-controller/deployment.yml
+```
+
 ## 3.4. traefik
 ### 3.4.1. prerequisites
 ### 3.4.2. configure helm values
