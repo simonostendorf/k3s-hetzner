@@ -19,4 +19,4 @@ spec:
           kind: TraefikService
 # tls is added later
 #  tls:
-#    secretName: traefik-example-com-tls
+#    secretName: example-com-staging-tls
