@@ -846,6 +846,8 @@ Copy the [deployment file](deployments/cluster-autoscaler/deployment.yml) to you
   * `INSERT_YOUR_BASE64_CLOUDINIT_HERE` insert your base64 encoded cloud-init configuration here
   * `HETZNER_NETWORK_ID_HERE` insert your private network id from the hetzner cloud here
 
+If you want to disable the public ipv4 and/or ipv6 use the aspects `HCLOUD_PUBLIC_IPV4` and `HCLOUD_PUBLIC_IPV6` and set them to `false`.
+
 The default configuration will create 3 agent pools with minimal 1 node and maximal 10 nodes. The nodes will be created with the CX21 server type and will be located in the FSN1 / HEL1 and NBG1 datacenter. 
 
 ### 3.7.6. deploy workload
