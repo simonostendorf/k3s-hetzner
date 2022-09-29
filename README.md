@@ -901,6 +901,9 @@ kubectl delete -f deployments/hpa/example-deployment-application.yml
 kubectl delete -f deployments/hpa/example-deployment-traffic.yml
 ```
 
+# Troubleshooting, bugs and errors
+
+
 # Credits
 Huge thank you to many people and git repos where I got my information and commands from.  
 Special thanks to:
