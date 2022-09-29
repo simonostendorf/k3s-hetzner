@@ -1,0 +1,96 @@
+site_name: k3s-hetzner
+theme:
+  name: material
+  custom_dir: theme
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: indigo
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - toc.follow
+  favicon: assets/favicon.png
+  logo: assets/logo.png
+  icon:
+    repo: fontawesome/brands/github
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/simonostendorf
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/simonostendorf
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/simonostendorf
+  generator: true
+  homepage: https://simonostendorf.github.io/k3s-hetzner/
+  consent:
+    title: Cookie consent
+    description: >-
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+    cookies:
+      github: GitHub
+      analytics: Google Analytics
+    actions:
+      - accept
+      - manage
+      - reject
+copyright: >
+  Copyright &copy; 2022 Simon Ostendorf<p>
+  If you want, you can change your cookie settings <a href="#__consent">here</a>
+repo_url: https://github.com/simonostendorf/k3s-hetzner/
+repo_name: simonostendorf/k3s-hetzner
+nav:
+  - 'Home':
+      - 'home/index.md'
+      - 'ToDo': 'home/todo.md'
+      - 'Troubleshooting': 'home/troubleshooting.md'
+      - 'Credits': 'home/credits.md'
+  - 'Prerequisites': 
+      - 'prerequisites/index.md'
+      - 'Hetzner': 'prerequisites/hetzner.md'
+      - 'Container Repository': 'prerequisites/container-repository.md'
+      - 'DNS Provider': 'prerequisites/dns-provider.md'
+      - 'Local Machine': 'prerequisites/local-machine.md'
+  - 'Installation': 
+      - 'installation/index.md'
+      - 'Hetzner': 'installation/hetzner.md'
+      - 'Servers': 'installation/servers.md'
+      - 'k3s': 'installation/k3s.md'
+  - 'Deployment': 
+      - 'deployment/index.md'
+      - 'Required Components':
+          - 'Cloud Controller Manager': 'deployment/ccm.md'
+          - 'Cloud Storage Driver': 'deployment/csi.md'
+          - 'Upgrade Controller': 'deployment/upgrade-controller.md'
+          - 'Ingress Controller': 'deployment/traefik.md'
+          - 'Cert-Manager': 'deployment/cert-manager.md'
+          - 'Metrics-Server': 'deployment/metrics-server.md'
+          - 'Cluster-Autoscaler': 'deployment/cluster-autoscaler.md'
+      - 'Other Components':
+          - 'Horizontal Pod Autoscaler': 'deployment/hpa.md'
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
