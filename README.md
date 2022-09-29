@@ -42,6 +42,8 @@ This repo covers:
 1.4.1.2. [setup hcloud context](#1412-setup-hcloud-context)  
 1.4.2. [Helm](#142-helm)  
 1.4.3. [kubectl](#143-kubectl)  
+1.4.4. [go](#144-go)    
+1.4.5. [docker](#145-docker)  
 2. [Installation](#2-installation)  
 2.1. [Hetzner](#21-hetzner)  
 2.1.1. [create placement groups](#211-create-placement-groups)  
@@ -140,6 +142,9 @@ You need an account at a container repository. You can use for example the [dock
 In this example, I will use the docker-hub. 
 
 ### 1.2.1. create account
+
+ATTENTION: Currently its not clear why you need the token, because passwords used later in the processes. This will be checked soon. 
+
 First, create an account at your container-repository provider.  
 If you want to use a docker-hub account, you can register [here](https://hub.docker.com/signup).
 
@@ -199,6 +204,32 @@ To install helm, visit the [official installation manual](https://helm.sh/docs/i
 To administrate the kubernetes cluster you also need kubectl, a command line interface to control kubernetes clusters.  
 You can visit the [kubernets documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-binary-with-curl-on-linux) for installation steps.  
 
+### 1.4.4. go
+In step [3.7.3](#373-create-autoscaler-image) we need to build a custom docker image for the autoscaler. To build the image we need go.
+
+Install go to your local machine with the following commands:
+```bash
+wget https://go.dev/dl/go1.19.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.19.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+rm go1.19.linux-amd64.tar.gz
+```
+
+You can check the installation with `go version`. 
+
+### 1.4.5. docker
+You need docker on your local machine to build a docker image in the step [3.7.3](#373-create-autoscaler-image).  
+Because the docker installation can be done via different ways (scripts, package-manager, docker-desktop in wsl) i will skip this step in this tutorial. 
+You can find information about getting docker [here](https://docs.docker.com/get-docker/). 
+
+You can check the installation with `docker version`. 
+
+You should login to your container registry created in step [1.2.1](#121-create-account) with the following command:
+```bash
+docker login -u DOCKER-USERNAME -p DOCKER_PASSWORD
+```
+Replace `DOCKER_USERNAME` with your docker username and `DOCKER_PASSWORD` with your password.
+
 # 2. Installation
 In this step we will install the kubernetes cluster and all needed components.
 
@@ -219,6 +250,8 @@ The commands will create a placement group for each hetzner location with the na
 
 To create the placement groups for all agents, run these commands on your local machine:
 ```bash
+#IMPORTANT: agent placement groups are not used in the current configuration because of configuration problems with the cluster-autoscaler.
+
 hcloud placement-group create --type spread --name k8s-agent-hel1 --label k8s-role=agent --label location=hel1
 
 hcloud placement-group create --type spread --name k8s-agent-fsn1 --label k8s-role=agent --label location=fsn1
@@ -244,20 +277,14 @@ hcloud network add-subnet k8s --network-zone eu-central --type cloud --ip-range 
 
 hcloud network add-subnet k8s --network-zone eu-central --type cloud --ip-range 10.1.2.0/24 # control_plane nbg1
 
-hcloud network add-subnet k8s --network-zone eu-central --type cloud --ip-range 10.2.0.0/24 # agent hel1
-
-hcloud network add-subnet k8s --network-zone eu-central --type cloud --ip-range 10.2.1.0/24 # agent fsn1
-
-hcloud network add-subnet k8s --network-zone eu-central --type cloud --ip-range 10.2.2.0/24 # agent nbg1
+hcloud network add-subnet k8s --network-zone eu-central --type cloud --ip-range 10.2.0.0/16 # agents (all locations)
 ```
 The commands will create the following subnets:
   * 10.0.0.0/24 for the load balancers for the controlplane and agents
   * 10.1.0.0/24 for the controlplane in hel1
   * 10.1.1.0/24 for the controlplane in fsn1
   * 10.1.2.0/24 for the controlplane in nbg1
-  * 10.2.0.0/24 for the agents in hel1
-  * 10.2.1.0/24 for the agents in fsn1
-  * 10.2.2.0/24 for the agents in nbg1
+  * 10.2.0.0/16 for the agents in all locations
 
 ### 2.1.3. create servers
 To create the servers for the control plane, run the following commands on your local machine:
@@ -744,13 +771,84 @@ kubectl apply -f deployments/traefik/dashboard-ingressroute.yml
 ```
 
 ## 3.6. deploy metrics-server
+Kubernetes uses the metrics-server for internal pod-metrics. It is not used for service metrics, these can later be added by other deployments like prometheus, node-exporter and grafana.
+
+To deploy the metrics-server copy the high-available [deployment file](deployments/metrics-server/deployment.yml) to your local machine and apply it to the cluster with the following command:
+```bash
+kubectl apply -f deployments/metrics-server/deployment.yml
+```
+You can find new releases of the metrics-server [here](https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/high-availability.yaml).
+
+After deploying the metrics-server the pods and nodes can collect internal metrics used in later steps for autoscaling nodes and pods. 
+
 ## 3.7. cluster-autoscaler
+In the whole setup we didnt setup agent (worker) nodes for the cluster. This is because we want to use the cluster-autoscaler to scale the cluster up and down based on the current workload. In this step we will create the configuration for our agent nodes and the corresponding deployment for the cluster-autoscaler.
+
 ### 3.7.1. create cloud-init configuration
+The cluster-autoscaler will create new vms inside the hetzner cloud. To configure the new vms we need to create a cloud-init configuration. The cloud-init configuration will install needed packages, do needed configuration, install k3s and join the cluster. 
+
+Copy the [cloud-init-config](deployments/cluster-autoscaler/cloud-init.yml) to your local machine and edit the parameters to fit your needs.  
+You definitly have to edit the following parameters:
+  * NOT NEEDED IN CURRENT CONFIG (`HETZNER_TOKEN_HERE` insert your hetzner cloud token for the cluster autoscaler here)
+  * `K3S_TOKEN_HERE` insert your k3s token here
+
+The cluster autoscaler needs the cloud-init configuration as base64 encoded string. You can encode the file with the following command:
+```bash
+openssl enc -base64 -in deployments/cluster-autoscaler/cloud-init.yml -out deployments/cluster-autoscaler/cloud-init.yml.b64
+```
+
 ### 3.7.2. create secret
+Copy the [secret file](deployments/cluster-autoscaler/secret.yml) to your local machine and insert your hetzner cloud token at `HETZNER_TOKEN_HERE`.
+
+Apply the secret to the cluster with the following command:
+```bash
+kubectl apply -f deployments/cluster-autoscaler/secret.yml
+```
+
 ### 3.7.3. create autoscaler image
+As described in step [1.4.4](#144-go) we need to create a custom image for the cluster-autoscaler using go. 
+Clone the autoscaler git repository into a new folder using the following command:
+```bash
+git clone https://github.com/kubernetes/autoscaler
+cd autoscaler/cluster-autoscaler
+```
+
+Start the build process with the following commands:
+Replace `USERNAME` with your docker username. 
+```bash
+make build-in-docker
+docker build -t DOCKER_USERNAME/k8s-cluster-autoscaler:latest -f Dockerfile.amd64 .
+```
+
+Push the created docker-image to your docker registry with the following command (also replace `DOCKER_USERNAME` with your username):
+```bash
+docker push DOCKER_USERNAME/k8s-cluster-autoscaler:latest
+```
+The docker registry was created in step [1.2.1](#121-create-docker-registry).
+
 ### 3.7.4. create repository secret
+To pull the custom image from the docker registry we need to create a secret inside the cluster to get access to the container repository.  
+You can create the secret from the commandline with the following command:
+```bash
+kubectl create secret docker-registry -n kube-system dockerhub --docker-server=docker.io --docker-username=DOCKER_USERNAME --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL
+```
+Replace `DOCKER_USERNAME` with your username, `DOCKER_PASSWORD` with your password and `DOCKER_EMAIL` with your email address used inside docker.
+
 ### 3.7.5. configure deployment
+Copy the [deployment file](deployments/cluster-autoscaler/deployment.yml) to your local machine and edit the following parameters:
+  * `DOCKER_USERNAME` insert your docker username here
+  * `--nodes=1:10:CX21:FSN1:k8s-agent-fsn1` is the node configuration. You can find more information [here](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/hetzner/README.md)
+  * `INSERT_YOUR_BASE64_CLOUDINIT_HERE` insert your base64 encoded cloud-init configuration here
+  * `HETZNER_NETWORK_ID_HERE` insert your private network id from the hetzner cloud here
+
+The default configuration will create 3 agent pools with minimal 1 node and maximal 10 nodes. The nodes will be created with the CX21 server type and will be located in the FSN1 / HEL1 and NBG1 datacenter. 
+
 ### 3.7.6. deploy workload
+You can apply the cluster autoscaler with the following command:
+```bash
+kubectl apply -f deployments/cluster-autoscaler/deployment.yml
+```
+
 ## 3.8. example horizontal pod autoscaler
 ### 3.8.1. example application
 ### 3.8.2. scale pods
