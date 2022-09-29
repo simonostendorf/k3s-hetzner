@@ -39,7 +39,7 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/simonostendorf
   generator: true
-  homepage: https://k3s-hetzner.simon-ostendorf.de/
+  homepage: https://simonostendorf.github.io/k3s-hetzner/
   consent:
     title: Cookie consent
     description: >-
