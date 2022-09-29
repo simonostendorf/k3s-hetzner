@@ -1,4 +1,5 @@
 site_name: k3s-hetzner
+site_url: https://simonostendorf.github.io/k3s-hetzner
 theme:
   name: material
 #  custom_dir: theme
