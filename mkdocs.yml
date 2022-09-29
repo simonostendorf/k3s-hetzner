@@ -1,7 +1,7 @@
 site_name: k3s-hetzner
 theme:
   name: material
-  custom_dir: theme
+#  custom_dir: theme
   language: en
   palette:
     - media: "(prefers-color-scheme: light)"
