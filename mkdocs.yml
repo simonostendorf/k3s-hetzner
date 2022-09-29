@@ -1,4 +1,5 @@
 site_name: k3s-hetzner
+site_author: Simon Ostendorf
 site_url: https://simonostendorf.github.io/k3s-hetzner
 theme:
   name: material
@@ -61,7 +62,7 @@ copyright: >
 repo_url: https://github.com/simonostendorf/k3s-hetzner/
 repo_name: simonostendorf/k3s-hetzner
 nav:
-  - 'Home':
+  - 'Home': 
       - 'home/index.md'
       - 'ToDo': 'home/todo.md'
       - 'Troubleshooting': 'home/troubleshooting.md'
@@ -95,3 +96,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+plugins:
+  - redirects:
+      redirect_maps: 
+        'index.md': 'home/index.md'
+  - search
