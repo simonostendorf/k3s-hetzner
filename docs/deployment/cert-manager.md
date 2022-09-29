@@ -102,6 +102,7 @@ kubectl delete -f example-com-staging-tls.yml --namespace=traefik
 
 #### create CerificateIssuer
 The setup will be similar to the staging environment. Copy the [issuer file](https://github.com/simonostendorf/k3s-hetzner/blob/main/deployments/cert-manager/letsencrypt-production-issuer.yml) to your local machine. Edit the file and replace the following values:
+
   * `certificate@example.com` with your email address you want to use for letsencrypt
   * `cloudflare@example.com` with your email address you use to login to cloudflare
   * `example.com` with your zone name(s) inside cloudflare

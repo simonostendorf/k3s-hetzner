@@ -53,10 +53,11 @@ Replace `DOCKER_USERNAME` with your username, `DOCKER_PASSWORD` with your passwo
 
 ## configure deployment
 Copy the [deployment file](https://github.com/simonostendorf/k3s-hetzner/blob/main/deployments/cluster-autoscaler/deployment.yml) to your local machine and edit the following parameters:
+
   * `DOCKER_USERNAME` insert your docker username here
   * `--nodes=1:10:CX21:FSN1:k8s-agent-fsn1` is the node configuration. You can find more information [here](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/hetzner/README.md)
   * `INSERT_YOUR_BASE64_CLOUDINIT_HERE` insert your base64 encoded cloud-init configuration here
-  * `HETZNER_NETWORK_ID_HERE` insert your private network id from the hetzner cloud here
+  * `HETZNER_NETWORK_ID_HERE` insert your private network id from the hetzner cloud here. The network id needs to be inserted as string. 
 
 If you want to disable the public ipv4 and/or ipv6 use the aspects `HCLOUD_PUBLIC_IPV4` and `HCLOUD_PUBLIC_IPV6` and set them to `false`.
 Maybe `HCLOUD_PLACEMENT_GROUP` is a possible option, but its not tested yet. 

@@ -77,11 +77,11 @@ spec:
             - name: HCLOUD_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: hetzner_cloud_controller_manager
+                  name: hetzner-cloud-controller-manager
                   key: token
             - name: HCLOUD_NETWORK
               valueFrom:
                 secretKeyRef:
-                  name: hetzner_cloud_controller_manager
+                  name: hetzner-cloud-controller-manager
                   key: network
       priorityClassName: system-cluster-critical
