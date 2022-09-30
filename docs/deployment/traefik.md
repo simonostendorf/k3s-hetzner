@@ -41,7 +41,7 @@ To visit all routes traefik provides a dashboard. In the next steps we will crea
 ### create basic auth
 Run the following command on your local machine to install the apache2 utilities. With this package you get access to htpassword which we will use now to generate the basic auth credentials.
 ```bash
-apt install apache2-utils
+apt install apache2-utils -y
 ```
 
 To generate a base64 encoded combination of the username and password, run the following command on your local machine:

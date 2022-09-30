@@ -176,7 +176,7 @@ spec:
           - name: HCLOUD_TOKEN
             valueFrom:
                 secretKeyRef:
-                  name: hetzner_cluster_autoscaler
+                  name: hetzner-cluster-autoscaler
                   key: token
           - name: HCLOUD_IMAGE
             value: debian-11

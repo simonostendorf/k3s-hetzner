@@ -82,7 +82,7 @@ nav:
       - 'deployment/index.md'
       - 'Required Components':
           - 'Cloud Controller Manager': 'deployment/ccm.md'
-          - 'Cloud Storage Driver': 'deployment/csi.md'
+          - 'Cloud Storage Interface': 'deployment/csi.md'
           - 'Upgrade Controller': 'deployment/upgrade-controller.md'
           - 'Ingress Controller': 'deployment/traefik.md'
           - 'Cert-Manager': 'deployment/cert-manager.md'

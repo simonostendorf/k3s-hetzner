@@ -26,7 +26,7 @@ wget https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/la
 
 Edit the deployment file and replace the secret name and the pod ip range. You can use the following commands to do this:
 ```bash
-sed -i 's/name: hcloud$/name: hetzner_cloud_controller_manager/' deployments/ccm/deployment.yml
+sed -i 's/name: hcloud$/name: hetzner-cloud-controller-manager/' deployments/ccm/deployment.yml
 sed -i 's/10.244.0.0/10.100.0.0/' deployments/ccm/deployment.yml
 ```
 

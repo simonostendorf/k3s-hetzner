@@ -1,4 +1,4 @@
-# cloud storage driver
+# cloud storage interface
 To use hetzner cloud volumes as persistent volume claims in kubernetes, we need to deploy the cloud-volume driver. The driver will than handle the volumes claims and create the volumes in hetzner cloud.  
 You can find more about the driver on the official [hetzner-csi](https://github.com/hetznercloud/csi-driver) github repository. 
 
@@ -13,7 +13,7 @@ kubectl apply -f deployments/csi/secret.yml
 ## deploy hcloud-csi
 Download the latest version of the storage driver deployment into the `deployments/csi` folder on your local machine:
 ```bash
-wget wget https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml -O deployments/csi/deployment.yml
+wget https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml -O deployments/csi/deployment.yml
 ```
 
 Edit the deployment file and replace the secret name. You can use the following command to do this:
@@ -23,7 +23,7 @@ sed -i 's/^.\{18\}name: hcloud-csi$/                  name: hetzner_container_st
 
 You can deploy the cloud controller manager with the following command from your local machine:
 ```bash
-kubectl apply -f deployments/ccm/deployment.yml
+kubectl apply -f deployments/csi/deployment.yml
 ```
 
 After this step you should see pods comming up in the cluster. To validate the starting pods, run the following command:

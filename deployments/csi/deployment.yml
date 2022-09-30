@@ -261,7 +261,7 @@ spec:
             - name: HCLOUD_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: hetzner_container_storage_interface
+                  name: hetzner-container-storage-interface
                   key: token
             - name: KUBE_NODE_NAME
               valueFrom:
