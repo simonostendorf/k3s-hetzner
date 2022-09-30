@@ -7,9 +7,19 @@ In this repo you find a step by step solution to deploy a high-available, auto s
 This repository only holds the code for the documentation and deployments. 
 
 ## Status
+### CI (main)
 [![ci](https://github.com/simonostendorf/k3s-hetzner/actions/workflows/ci.yml/badge.svg)](https://github.com/simonostendorf/k3s-hetzner/actions/workflows/ci.yml")
+
+### CI (dev)
+[![ci dev](https://github.com/simonostendorf/k3s-hetzner/actions/workflows/ci.yml/badge.svg)](https://github.com/simonostendorf/k3s-hetzner/actions/workflows/ci.yml?branch=dev")
+
+### release
 [![GitHub release](https://img.shields.io/github/release/simonostendorf/k3s-hetzner?include_prereleases=&sort=semver&color=blue)](https://github.com/simonostendorf/k3s-hetzner/releases/)
+
+### license
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+
+### issues
 [![issues - k3s-hetzner](https://img.shields.io/github/issues/simonostendorf/k3s-hetzner)](https://github.com/simonostendorf/k3s-hetzner/issues)
 
 ## Support this project
