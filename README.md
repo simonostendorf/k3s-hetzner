@@ -17,7 +17,7 @@ This repository only holds the code for the documentation and deployments.
 [![GitHub release](https://img.shields.io/github/release/simonostendorf/k3s-hetzner?include_prereleases=&sort=semver&color=blue)](https://github.com/simonostendorf/k3s-hetzner/releases/)
 
 ### license
-[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+[![License](https://img.shields.io/badge/License-CC--BY--SA--4.0%20-blue)](#license)
 
 ### issues
 [![issues - k3s-hetzner](https://img.shields.io/github/issues/simonostendorf/k3s-hetzner)](https://github.com/simonostendorf/k3s-hetzner/issues)
@@ -35,7 +35,7 @@ Be shure to read the [contribution guidelines](CONTRIBUTING.md) and the [code of
 ## License
 
 Copyright © 2020 Simon Ostendorf  
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [CC-BY-4.0](LICENSE).
 
 ## Credits
 Huge thank you to many people and git repos where I got my information and commands from.  
