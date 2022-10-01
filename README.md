@@ -35,7 +35,7 @@ Be shure to read the [contribution guidelines](CONTRIBUTING.md) and the [code of
 ## License
 
 Copyright © 2020 Simon Ostendorf  
-This project is licensed under the [CC-BY-4.0](LICENSE).
+This project is licensed under the [CC-BY-4.0 license](LICENSE).
 
 ## Credits
 Huge thank you to many people and git repos where I got my information and commands from.  
