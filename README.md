@@ -17,7 +17,7 @@ This repository only holds the code for the documentation and deployments.
 [![GitHub release](https://img.shields.io/github/release/simonostendorf/k3s-hetzner?include_prereleases=&sort=semver&color=blue)](https://github.com/simonostendorf/k3s-hetzner/releases/)
 
 ### license
-[![License](https://img.shields.io/badge/License-CC--BY--SA--4.0%20-blue)](#license)
+[![License](https://img.shields.io/badge/License-CC--BY--SA--4.0%20license-blue)](#license)
 
 ### issues
 [![issues - k3s-hetzner](https://img.shields.io/github/issues/simonostendorf/k3s-hetzner)](https://github.com/simonostendorf/k3s-hetzner/issues)
