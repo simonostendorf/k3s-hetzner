@@ -5,8 +5,8 @@ The example is based on the example of [The DevOpy Guy](https://github.com/marce
 ## Example Application
 Download the example application and the traffic generator files into the `deployments/hpa` folder on your local machine:
 ```bash
-curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/deployment.yaml --create-dirs -o deployments/hpa/example-deployment-application.yml
-curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/traffic-generator.yaml --create-dirs -o deployments/hpa/example-deployment-traffic.yml
+curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/deployment.yaml --create-dirs -L -o deployments/hpa/example-deployment-application.yml
+curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/traffic-generator.yaml --create-dirs -L -o deployments/hpa/example-deployment-traffic.yml
 ```
 
 Apply both deployments to the cluster:

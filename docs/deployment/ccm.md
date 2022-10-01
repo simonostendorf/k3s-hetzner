@@ -42,7 +42,7 @@ kubectl apply -f deployments/ccm/secret.yml
 ## Deploy CCM
 Download the latest version of the cloud controller manager deployment into the `deployments/ccm` folder on your local machine:
 ```bash
-curl https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml --create-dirs -o deployments/ccm/deployment.yml
+curl https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml --create-dirs -L -o deployments/ccm/deployment.yml
 ```
 
 Edit the deployment file and replace the secret name and the pod ip range. You can use the following commands to do this:

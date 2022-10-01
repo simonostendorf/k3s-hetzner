@@ -34,7 +34,7 @@ kubectl apply -f deployments/csi/secret.yml
 ## Deploy hcloud-csi
 Download the latest version of the storage driver deployment into the `deployments/csi` folder on your local machine:
 ```bash
-curl https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml --create-dirs -o deployments/csi/deployment.yml
+curl https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml --create-dirs -L -o deployments/csi/deployment.yml
 ```
 
 Edit the deployment file and replace the secret name. You can use the following command to do this:
