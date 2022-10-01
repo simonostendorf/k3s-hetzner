@@ -22,7 +22,7 @@ Create the following cloud-init configuration:
 runcmd:
 - apt update
 - apt upgrade -y
-- apt install apparmor apparmor-utils -y
+- apt install apparmor apparmor-utils python3-pip -y
 - timedatectl set-timezone Europe/Berlin
 - pip install hcloud
 - wget https://github.com/simonostendorf/k3s-hetzner/tree/main/scripts/setup-agent-nodes.py -o setup-agent-nodes.py
