@@ -9,7 +9,7 @@ In my example configuration I have named the token `cloud-storage-interface` in 
 
 Create a new deployment file:
 ```bash
-touch deployments/csi/secret.yml
+mkdir -p deployments/csi
 nano deployments/csi/secret.yml
 ```
 

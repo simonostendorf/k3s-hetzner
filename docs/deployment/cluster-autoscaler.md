@@ -6,7 +6,7 @@ The cluster-autoscaler will create new vms inside the hetzner cloud. To configur
 
 Create a new file for the cloud-init configuration and edit the file contents:
 ```bash
-touch deployments/cluster-autoscaler/cloud-init.yml
+mkdir -p deployments/cluster-autoscaler
 nano deployments/cluster-autoscaler/cloud-init.yml
 ```
 
@@ -49,7 +49,7 @@ You have to create a new secret for the cluster autoscaler. The secret will cont
 
 Create a new deployment file:
 ```bash
-touch deployments/cluster-autoscaler/secret.yml
+mkdir -p deployments/cluster-autoscaler
 nano deployments/cluster-autoscaler/secret.yml
 ```
 

@@ -15,7 +15,7 @@ hcloud network list #(1)!
 
 Create a new deployment file:
 ```bash
-touch deployments/ccm/secret.yml
+mkdir -p deployments/ccm
 nano deployments/ccm/secret.yml
 ```
 
