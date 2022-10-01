@@ -3,6 +3,14 @@ In the last preparation step, we have to setup our local machine.
 
 As local machine you need a linux-host. You can install it directy to your host, use a virtual machine or *- as i do -* use [wsl](https://learn.microsoft.com/de-de/windows/wsl/), the windows subsystem for linux.  
 
+## Packages
+To install the required packages, you can use the following commands:
+```bash
+apt install apache2-utils -y #(1)!
+```
+
+1. We need the apache2-utils package to generate the basic auth credentials for the traefik dashboard in a later step.
+
 ## hcloud
 To control the hetzner cloud from the command line you need hcloud, a command-line tool by hetzner. You can find more information [here](https://github.com/hetznercloud/cli).
 
