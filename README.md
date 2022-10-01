@@ -2,7 +2,7 @@
 
 In this repo you find a step by step solution to deploy a high-available, auto scalable and loadbalanced k3s cluster to servers inside the Hetzner-Cloud.
 
-**The complete guide will be step by step on [my documentation page](https://simonostendorf.github.io/k3s-hetzner/).**
+**The complete guide will be step by step on [my documentation page](https://k3s-hetzner.simon-ostendorf.dev).**
 
 This repository only holds the code for the documentation and deployments. 
 

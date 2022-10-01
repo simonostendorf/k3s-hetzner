@@ -1,2 +1,2 @@
 # Installation
-In this step we will install the kubernetes cluster and all needed components.
+In this step we will setup all servers, install needed packages and finally install k3s.
