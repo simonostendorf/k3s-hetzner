@@ -123,7 +123,12 @@ You can check the installation with `docker version`.
 
 ### Login to Docker Hub
 You should login to your container registry created in [a prerequisite step](../container-repository/#create-account) with the following command.  
-Replace `DOCKER_USERNAME` with your docker username and `DOCKER_PASSWORD` with your writeable token (In this guide i named the token `local-machine`).
+
+!!! danger "Replace variables"
+    Replace `DOCKER_USERNAME` with your docker username and `DOCKER_PASSWORD` with your writeable token (In this guide i named the token `local-machine`).
+
 ```bash
-docker login -u DOCKER-USERNAME -p DOCKER_PASSWORD
+docker login -u DOCKER-USERNAME -p DOCKER_PASSWORD #(1)!
 ```
+
+1. Your docker username and writeable token created in the container-registry step
