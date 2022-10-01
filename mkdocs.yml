@@ -1,6 +1,6 @@
 site_name: k3s-hetzner
 site_author: Simon Ostendorf
-site_url: https://simonostendorf.github.io/k3s-hetzner
+site_url: https://k3s-hetzner.simon-ostendorf.dev
 theme:
   name: material
 #  custom_dir: theme
@@ -28,8 +28,9 @@ theme:
     - navigation.indexes
     - navigation.top
     - toc.follow
-  favicon: assets/favicon.png
-  logo: assets/logo.png
+    - content.code.annotate
+#  favicon: assets/favicon.png
+#  logo: assets/logo.png
   icon:
     repo: fontawesome/brands/github
 extra:
@@ -41,7 +42,7 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/simonostendorf
   generator: true
-  homepage: https://simonostendorf.github.io/k3s-hetzner/
+  homepage: https://k3s-hetzner.simon-ostendorf.dev
   consent:
     title: Cookie consent
     description: >-
@@ -96,6 +97,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - admonition
+  - pymdownx.details
 plugins:
   - redirects:
       redirect_maps: 
