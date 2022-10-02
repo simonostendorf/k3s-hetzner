@@ -215,7 +215,7 @@ If everything works with the staging certificate we can switch to the production
 
 You can delete the old staging certificate with the following commands:
 ```bash
-kubectl delete -f example-com-staging-tls.yml --namespace=traefik #(1)!
+kubectl delete -f deployments/cert-manager/example-com-staging-tls.yml --namespace=traefik #(1)!
 ```
 
 1. Replace `example-com-staging-tls.yml` with the name of your certificate.
