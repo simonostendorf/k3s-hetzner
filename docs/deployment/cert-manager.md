@@ -16,7 +16,7 @@ kubectl create namespace cert-manager
 
 Because kubernetes does not know about certificates in the default installation we need to create a custom resource definition for certificates. Run the following command to download and apply the custom resource definitions:
 ```bash
-wget https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml -O deployments/cert-manager/crds.yml
+curl https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml --create-dirs -L -o deployments/cert-manager/crds.yml
 kubectl apply -f deployments/cert-manager/crds.yml
 ```
 
