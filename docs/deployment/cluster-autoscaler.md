@@ -100,6 +100,11 @@ Push the created docker-image to your docker registry with the following command
 docker push DOCKER_USERNAME/k8s-cluster-autoscaler:latest
 ```
 
+Go back to your old working directory with the following command:
+```bash
+cd ../..
+```
+
 ## Create Registry Secret
 To pull the custom image from the docker registry we need to create a secret inside the cluster to get access to the container registry.  
 You can create the secret from the commandline with the following command:
