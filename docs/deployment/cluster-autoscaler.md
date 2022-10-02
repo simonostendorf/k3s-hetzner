@@ -68,6 +68,11 @@ stringData:
 1. Replace `CLOUD_API_TOKEN_HERE` with the token you created in the prerequisite step. The token is named `cluster-autoscaler` in this example.
 2. Replace `CLOUD_INIT_HERE` with the base64 encoded cloud-init configuration. You can read the file with `cat deployments/cluster-autoscaler/cloud-init.yml.b64` and copy the content.
 
+You can print your base64 encoded cloud-init configuration without newlines with the following command:
+```bash
+cat deployments/cluster-autoscaler/cloud-init.yml.b64 | awk '{ printf("%s", $0) }'
+``` 
+
 Apply the secret to the kubernetes cluster by running the following command on your local machine:
 ```bash
 kubectl apply -f deployments/cluster-autoscaler/secret.yml
