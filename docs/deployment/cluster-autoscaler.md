@@ -13,17 +13,18 @@ nano deployments/cluster-autoscaler/cloud-init.yml
 Create the following cloud-init configuration:
 
 !!! danger "Replace values"
-    You have to replace `YOUR_HETZNER_TOKEN` with your hetzner token. In this example the token is named `cluster-autoscaler`
+    Please replace `YOUR_TIMEZONE` with your timezone used for the servers before.
+    You also have to replace `YOUR_HETZNER_TOKEN` with your hetzner token. In this example the token is named `cluster-autoscaler`
     Also replace `YOUR_NETWORK_ID` with your network id of the private network. You looked up the network id in a previous step but you can also look it up with `hcloud network list`.
     Replace `YOUR_K3S_TOKEN` with your k3s token, created in the [k3s-setup step](../../installation/k3s/#token).
 
-```yaml linenums="1" hl_lines="9 12"
+```yaml linenums="1" hl_lines="6 9 12"
 #cloud-config
 runcmd:
 - apt update
 - apt upgrade -y
 - apt install apparmor apparmor-utils python3-pip -y
-- timedatectl set-timezone Europe/Berlin
+- timedatectl set-timezone YOUR_TIMEZONE
 - pip install hcloud
 - wget https://github.com/simonostendorf/k3s-hetzner/tree/main/scripts/setup-agent-nodes.py -o setup-agent-nodes.py
 - python3 setup-agent-nodes.py --token YOUR_HETZNER_TOKEN --server_name $(hostname -f) --network_id YOUR_NETWORK_ID
