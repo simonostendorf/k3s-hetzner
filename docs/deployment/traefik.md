@@ -68,6 +68,7 @@ service:
   type: LoadBalancer
   annotations: {
     load-balancer.hetzner.cloud/name: "k8s-ingress", #(1)!
+    load-balancer.hetzner.cloud/location: "nbg1",
     load-balancer.hetzner.cloud/use-private-ip: true
   }
   labels: {}
