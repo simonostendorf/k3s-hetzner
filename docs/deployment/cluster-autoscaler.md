@@ -6,37 +6,30 @@ The cluster-autoscaler will create new vms inside the hetzner cloud. To configur
 
 Create a new file for the cloud-init configuration and edit the file contents:
 ```bash
-touch deployments/cluster-autoscaler/cloud-init.yml
+mkdir -p deployments/cluster-autoscaler
 nano deployments/cluster-autoscaler/cloud-init.yml
 ```
 
 Create the following cloud-init configuration:
 
 !!! danger "Replace values"
-    You have to replace `YOUR_HETZNER_TOKEN` with your hetzner token. In this example the token is named `cluster-autoscaler`
+    Please replace `YOUR_TIMEZONE` with your timezone used for the servers before.
+    You also have to replace `YOUR_HETZNER_TOKEN` with your hetzner token. In this example the token is named `cluster-autoscaler`
     Also replace `YOUR_NETWORK_ID` with your network id of the private network. You looked up the network id in a previous step but you can also look it up with `hcloud network list`.
     Replace `YOUR_K3S_TOKEN` with your k3s token, created in the [k3s-setup step](../../installation/k3s/#token).
 
-```yaml linenums="1" hl_lines="9 12"
+```yaml linenums="1" hl_lines="6 9 11"
 #cloud-config
 runcmd:
 - apt update
 - apt upgrade -y
-- apt install apparmor apparmor-utils -y
-- timedatectl set-timezone Europe/Berlin
+- apt install apparmor apparmor-utils python3-pip -y
+- timedatectl set-timezone YOUR_TIMEZONE
 - pip install hcloud
-- wget https://github.com/simonostendorf/k3s-hetzner/tree/main/scripts/setup-agent-nodes.py -o setup-agent-nodes.py
+- curl https://raw.githubusercontent.com/simonostendorf/k3s-hetzner/main/scripts/setup-agent-nodes.py -L -o setup-agent-nodes.py
 - python3 setup-agent-nodes.py --token YOUR_HETZNER_TOKEN --server_name $(hostname -f) --network_id YOUR_NETWORK_ID
 - sleep 20
-- curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.25.0-rc1+k3s1" \
-  K3S_TOKEN="YOUR_K3S_TOKEN" \
-  K3S_URL="https://10.0.0.100:6443" \
-  INSTALL_K3S_EXEC="agent \
-  --node-name="$(hostname -f)" \
-  --kubelet-arg="cloud-provider=external" \
-  --node-ip=$(hostname -I | awk '{print $2}') \
-  --node-external-ip=$(hostname -I | awk '{print $1}') \
-  --flannel-iface=ens10" sh -
+- curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.25.0-rc1+k3s1" K3S_TOKEN="YOUR_K3S_TOKEN" K3S_URL="https://10.0.0.100:6443" INSTALL_K3S_EXEC="agent --node-name="$(hostname -f)" --kubelet-arg="cloud-provider=external" --node-ip=$(hostname -I | awk '{print $2}') --node-external-ip=$(hostname -I | awk '{print $1}') --flannel-iface=ens10" sh -
 ```
 
 The cluster autoscaler needs the cloud-init configuration as base64 encoded string. You can encode the file with the following command:
@@ -49,7 +42,7 @@ You have to create a new secret for the cluster autoscaler. The secret will cont
 
 Create a new deployment file:
 ```bash
-touch deployments/cluster-autoscaler/secret.yml
+mkdir -p deployments/cluster-autoscaler
 nano deployments/cluster-autoscaler/secret.yml
 ```
 
@@ -67,6 +60,11 @@ stringData:
 
 1. Replace `CLOUD_API_TOKEN_HERE` with the token you created in the prerequisite step. The token is named `cluster-autoscaler` in this example.
 2. Replace `CLOUD_INIT_HERE` with the base64 encoded cloud-init configuration. You can read the file with `cat deployments/cluster-autoscaler/cloud-init.yml.b64` and copy the content.
+
+You can print your base64 encoded cloud-init configuration without newlines with the following command:
+```bash
+cat deployments/cluster-autoscaler/cloud-init.yml.b64 | awk '{ printf("%s", $0) }'
+``` 
 
 Apply the secret to the kubernetes cluster by running the following command on your local machine:
 ```bash
@@ -100,6 +98,11 @@ Push the created docker-image to your docker registry with the following command
 docker push DOCKER_USERNAME/k8s-cluster-autoscaler:latest
 ```
 
+Go back to your old working directory with the following command:
+```bash
+cd ../..
+```
+
 ## Create Registry Secret
 To pull the custom image from the docker registry we need to create a secret inside the cluster to get access to the container registry.  
 You can create the secret from the commandline with the following command:
@@ -115,7 +118,7 @@ kubectl create secret docker-registry -n kube-system dockerhub --docker-server=d
 ## Configure Deployment
 To deploy the cluster autoscaler you have to create a deployment file. You can download the latest deployment file with the following command:
 ```bash
-curl https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/hetzner/examples/cluster-autoscaler-run-on-master.yaml --create-dirs -o deployments/cluster-autoscaler/deployment.yml
+curl https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/hetzner/examples/cluster-autoscaler-run-on-master.yaml --create-dirs -L -o deployments/cluster-autoscaler/deployment.yml
 ```
 
 Edit the file with the following command:
@@ -153,8 +156,8 @@ name: dockerhub
             value: debian-11
 
 # Under spec.template.spec.containers[0].env add the secret value with: (eg. after line 180 in this example)
-          - name: HCLOUD_PUBLIC_IPV4 #(8)!
-            value: false
+#          - name: HCLOUD_PUBLIC_IPV4 #(8)!
+#            value: false
 ```
 
 1. Replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../prerequisites/container-registry/#create-account).
@@ -166,10 +169,20 @@ name: dockerhub
 7. Configure the scale down timer here
 8. Set this to true if you want to use public ipv4 addresses
 
+!!! error "Attention"
+    The hetzner cloud-api is only available via IPv4.
+    The nodes have to reach the cloud-api because they run a python-script at boot to assign the correct private ip. 
+    You can find more information about this in the [hetzner github issue](https://github.com/hetznercloud/hcloud-cloud-controller-manager/issues/299).
+
 !!! todo "ToDo"
     Maybe `HCLOUD_PLACEMENT_GROUP` is a possible option, but its not tested yet. 
 
 The default configuration will create 3 agent pools with minimal 1 node and maximal 10 nodes. The nodes will be created with the CX21 server type and will be located in the FSN1 / HEL1 and NBG1 datacenter. 
+
+!!! info "Information"
+    The minimal nodes will not be created directly.  
+    The cluster-autoscaler needs a scaleup-event to create new nodes.  
+    The agents will get created if they are needed and then not deleted if you define a minimum node number. 
 
 ## Deploy Workload
 You can apply the cluster autoscaler with the following command:

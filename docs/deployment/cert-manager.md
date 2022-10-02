@@ -16,7 +16,7 @@ kubectl create namespace cert-manager
 
 Because kubernetes does not know about certificates in the default installation we need to create a custom resource definition for certificates. Run the following command to download and apply the custom resource definitions:
 ```bash
-wget https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml -O deployments/cert-manager/crds.yml
+curl https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml --create-dirs -L -o deployments/cert-manager/crds.yml
 kubectl apply -f deployments/cert-manager/crds.yml
 ```
 
@@ -29,7 +29,7 @@ kubectl get certificates
 ## Configure Helm Values
 Create a new helm values file for cert-manager with the following command:
 ```bash
-touch deployments/cert-manager/values.yml
+mkdir -p deployments/cert-manager
 nano deployments/cert-manager/values.yml
 ```
 
@@ -68,7 +68,7 @@ As described in the [cloudflare step](../../prerequisites/dns-provider/#create-t
 
 Create a new kubernetes secret with the following command:
 ```bash
-touch deployments/cert-manager/cloudflare-secret.yml
+mkdir -p deployments/cert-manager
 nano deployments/cert-manager/cloudflare-secret.yml
 ```
 
@@ -97,7 +97,7 @@ As described previously we first use staging certificates to test our environmen
 #### Create CerificateIssuer
 Create a new certificate issuer with the following command:
 ```bash
-touch deployments/cert-manager/letsencrypt-staging-issuer.yml
+mkdir -p deployments/cert-manager
 nano deployments/cert-manager/letsencrypt-staging-issuer.yml
 ```
 
@@ -139,12 +139,11 @@ The next step is to create a certificate.
 
 Create a new certificate with the following command:
 ```bash
-touch deployments/cert-manager/example-com-staging-tls.yml #(1)!
+mkdir -p deployments/cert-manager
 nano deployments/cert-manager/example-com-staging-tls.yml #(1)!
 ```
 
 1. Replace `example-com-staging-tls.yml` with the name of your certificate.
-2. Replace `example-com-staging-tls.yml` with the name of your certificate.
 
 Edit the file and add the following content:
 ```yaml linenums="1"
@@ -216,7 +215,7 @@ If everything works with the staging certificate we can switch to the production
 
 You can delete the old staging certificate with the following commands:
 ```bash
-kubectl delete -f example-com-staging-tls.yml --namespace=traefik #(1)!
+kubectl delete -f deployments/cert-manager/example-com-staging-tls.yml --namespace=traefik #(1)!
 ```
 
 1. Replace `example-com-staging-tls.yml` with the name of your certificate.
@@ -267,7 +266,7 @@ Now we will create separate certificates for traefik and all other pods. In this
 
 Create a new certificate with the following command:
 ```bash
-touch deployments/cert-manager/traefik-example-com-tls.yml #(1)!
+mkdir -p deployments/cert-manager
 nano deployments/cert-manager/traefik-example-com-tls.yml #(1)!
 ```
 
