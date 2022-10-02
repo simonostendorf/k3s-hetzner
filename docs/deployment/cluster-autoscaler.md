@@ -26,7 +26,7 @@ runcmd:
 - apt install apparmor apparmor-utils python3-pip -y
 - timedatectl set-timezone YOUR_TIMEZONE
 - pip install hcloud
-- wget https://github.com/simonostendorf/k3s-hetzner/tree/main/scripts/setup-agent-nodes.py -o setup-agent-nodes.py
+- curl https://raw.githubusercontent.com/simonostendorf/k3s-hetzner/main/scripts/setup-agent-nodes.py -L -o setup-agent-nodes.py
 - python3 setup-agent-nodes.py --token YOUR_HETZNER_TOKEN --server_name $(hostname -f) --network_id YOUR_NETWORK_ID
 - sleep 20
 - curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.25.0-rc1+k3s1" K3S_TOKEN="YOUR_K3S_TOKEN" K3S_URL="https://10.0.0.100:6443" INSTALL_K3S_EXEC="agent --node-name="$(hostname -f)" --kubelet-arg="cloud-provider=external" --node-ip=$(hostname -I | awk '{print $2}') --node-external-ip=$(hostname -I | awk '{print $1}') --flannel-iface=ens10" sh -
