@@ -125,7 +125,7 @@ kubectl create secret docker-registry -n kube-system dockerhub --docker-server=d
 ## Configure Deployment
 To deploy the cluster autoscaler you have to create a deployment file. You can download the latest deployment file with the following command:
 ```bash
-curl https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/hetzner/examples/cluster-autoscaler-run-on-master.yaml --create-dirs -L -o deployments/cluster-autoscaler/deployment.yml
+curl https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/hetzner/examples/cluster-autoscaler-run-on-master.yaml --create-dirs -L -o deployments/cluster-autoscaler/deployment.yml
 ```
 
 Edit the file with the following command:
