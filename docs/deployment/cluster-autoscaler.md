@@ -18,7 +18,7 @@ Create the following cloud-init configuration:
     Also replace `YOUR_NETWORK_ID` with your network id of the private network. You looked up the network id in a previous step but you can also look it up with `hcloud network list`.
     Replace `YOUR_K3S_TOKEN` with your k3s token, created in the [k3s-setup step](../../installation/k3s/#token).
 
-```yaml linenums="1" hl_lines="6 9 12"
+```yaml linenums="1" hl_lines="6 9 11"
 #cloud-config
 runcmd:
 - apt update
@@ -29,15 +29,7 @@ runcmd:
 - wget https://github.com/simonostendorf/k3s-hetzner/tree/main/scripts/setup-agent-nodes.py -o setup-agent-nodes.py
 - python3 setup-agent-nodes.py --token YOUR_HETZNER_TOKEN --server_name $(hostname -f) --network_id YOUR_NETWORK_ID
 - sleep 20
-- curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.25.0-rc1+k3s1" \
-  K3S_TOKEN="YOUR_K3S_TOKEN" \
-  K3S_URL="https://10.0.0.100:6443" \
-  INSTALL_K3S_EXEC="agent \
-  --node-name="$(hostname -f)" \
-  --kubelet-arg="cloud-provider=external" \
-  --node-ip=$(hostname -I | awk '{print $2}') \
-  --node-external-ip=$(hostname -I | awk '{print $1}') \
-  --flannel-iface=ens10" sh -
+- curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.25.0-rc1+k3s1" K3S_TOKEN="YOUR_K3S_TOKEN" K3S_URL="https://10.0.0.100:6443" INSTALL_K3S_EXEC="agent --node-name="$(hostname -f)" --kubelet-arg="cloud-provider=external" --node-ip=$(hostname -I | awk '{print $2}') --node-external-ip=$(hostname -I | awk '{print $1}') --flannel-iface=ens10" sh -
 ```
 
 The cluster autoscaler needs the cloud-init configuration as base64 encoded string. You can encode the file with the following command:
