@@ -156,8 +156,8 @@ name: dockerhub
             value: debian-11
 
 # Under spec.template.spec.containers[0].env add the secret value with: (eg. after line 180 in this example)
-          - name: HCLOUD_PUBLIC_IPV4 #(8)!
-            value: false
+#          - name: HCLOUD_PUBLIC_IPV4 #(8)!
+#            value: false
 ```
 
 1. Replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../prerequisites/container-registry/#create-account).
@@ -168,6 +168,11 @@ name: dockerhub
 6. Configure the scale down timer here
 7. Configure the scale down timer here
 8. Set this to true if you want to use public ipv4 addresses
+
+!!! error "Attention"
+    The hetzner cloud-api is only available via IPv4.
+    The nodes have to reach the cloud-api because they run a python-script at boot to assign the correct private ip. 
+    You can find more information about this in the [hetzner github issue](https://github.com/hetznercloud/hcloud-cloud-controller-manager/issues/299).
 
 !!! todo "ToDo"
     Maybe `HCLOUD_PLACEMENT_GROUP` is a possible option, but its not tested yet. 
