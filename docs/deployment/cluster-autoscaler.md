@@ -179,6 +179,11 @@ name: dockerhub
 
 The default configuration will create 3 agent pools with minimal 1 node and maximal 10 nodes. The nodes will be created with the CX21 server type and will be located in the FSN1 / HEL1 and NBG1 datacenter. 
 
+!!! info "Information"
+    The minimal nodes will not be created directly.  
+    The cluster-autoscaler needs a scaleup-event to create new nodes.  
+    The agents will get created if they are needed and then not deleted if you define a minimum node number. 
+
 ## Deploy Workload
 You can apply the cluster autoscaler with the following command:
 ```bash
