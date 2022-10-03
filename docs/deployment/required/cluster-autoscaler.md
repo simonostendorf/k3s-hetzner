@@ -121,6 +121,11 @@ To deploy the cluster autoscaler you have to create a deployment file. You can d
 curl https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/hetzner/examples/cluster-autoscaler-run-on-master.yaml --create-dirs -L -o deployments/cluster-autoscaler/deployment.yml
 ```
 
+Run the following command to replace the node tolerations:
+```bash
+sed -z --in-place "s#        - effect: NoSchedule\n          key: node-role.kubernetes.io/master#        - key: CriticalAddonsOnly\n          operator: Exists#g" deployments/cluster-autoscaler/deployment.yml
+```
+
 Edit the file with the following command:
 ```bash
 nano deployments/cluster-autoscaler/deployment.yml
