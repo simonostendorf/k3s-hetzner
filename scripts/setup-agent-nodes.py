@@ -17,6 +17,7 @@ def find_used_ips(network, ip_begin):
 def attach_to_network(nw, ip, srv, retrys=0):
     if retrys >= 5:
         print("Failed to attach server to network. Max retrys reached. Exiting.")
+        srv.delete()
         return
 
     try:
