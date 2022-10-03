@@ -3,7 +3,7 @@ The first step is to deploy the cloud-controller-manager. This piece of software
 
 ## Setup Secret
 The first step is to create a kubernetes secret with our cloud api token that the cloud-controller-manager will use to authenticate against the hetzner cloud api.  
-We have created the token in [the preparation step](../../../prerequisites/hetzner/#create-api-tokens).  
+We have created the token in [the preparation step](../../prerequisites/hetzner/#create-api-tokens).  
 In my example configuration I have named the token `cloud-controller-manager` in the hetzner cloud. 
 
 You also need the network-id from your private network. To get the id you can either copy the id from the hetzner cloud webinterface or copy the id from the following command:
@@ -15,7 +15,7 @@ hcloud network list #(1)!
 
 Create a new deployment file:
 ```bash
-mkdir -p deployments/ccm
+touch deployments/ccm/secret.yml
 nano deployments/ccm/secret.yml
 ```
 
@@ -42,7 +42,7 @@ kubectl apply -f deployments/ccm/secret.yml
 ## Deploy CCM
 Download the latest version of the cloud controller manager deployment into the `deployments/ccm` folder on your local machine:
 ```bash
-curl https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml --create-dirs -L -o deployments/ccm/deployment.yml
+curl https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml --create-dirs -o deployments/ccm/deployment.yml
 ```
 
 Edit the deployment file and replace the secret name and the pod ip range. You can use the following commands to do this:
