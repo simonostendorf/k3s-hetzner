@@ -4,7 +4,7 @@ You can find more about the driver on the official [hetzner-csi](https://github.
 
 ## Setup Secret
 Similar to the cloud-controller-manager in a previous step, we have to create a secret for the cloud-storage-interface. 
-We have created the token in [the preparation step](../../prerequisites/hetzner/#create-api-tokens).  
+We have created the token in [the preparation step](../../../prerequisites/hetzner/#create-api-tokens).  
 In my example configuration I have named the token `cloud-storage-interface` in the hetzner cloud. 
 
 Create a new deployment file:

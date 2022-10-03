@@ -23,7 +23,7 @@ wrk -c 5 -t 5 -d 99999 -H "Connection: Close" http://application-cpu
 ```
 *This command will install wrk,a modern HTTP benchmarking tool capable of generating load. The command will generate 5 concurrent connections with 5 threads for 99999 seconds. The load will be generated against the application-cpu service.*
 
-With the following command you can the the top resource consuming pods:
+With the following command you can see the top resource consuming pods:
 ```bash
 kubectl top pods
 ```
