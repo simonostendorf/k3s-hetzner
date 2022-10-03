@@ -6,6 +6,14 @@ To deploy the metrics-server download the high-available deployment file to your
 curl https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/high-availability.yaml --create-dirs -L -o deployments/metrics-server/deployment.yml
 ```
 
+Change the deployment file with the following commands to fit our needs:
+```bash
+sed -z --in-place 's|replicas: 2|replicas: 3|g' deployments/metrics-server/deployment.yml
+sed -z --in-place 's|    spec:\n      affinity:|    spec:\n      tolerations:\n        - key: CriticalAddonsOnly\n          operator: Exists\n      affinity:|g' deployments/metrics-server/deployment.yml
+sed -z --in-place 's|            topologyKey: kubernetes.io/hostname\n      containers:|            topologyKey: kubernetes.io/hostname\n        nodeAffinity:\n          requiredDuringSchedulingIgnoredDuringExecution:\n            nodeSelectorTerms:\n              - matchExpressions:\n                  - key: node-role.kubernetes.io/master\n                    operator: Exists\n      containers:|g' deployments/metrics-server/deployment.yml
+sed -z --in-place 's|apiVersion: policy/v1beta1|apiVersion: policy/v1|g' deployments/metrics-server/deployment.yml
+```
+
 Deploy the metrics-server with the following command:
 ```bash
 kubectl apply -f deployments/metrics-server/deployment.yml
