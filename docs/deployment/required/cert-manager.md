@@ -1,6 +1,6 @@
 # Cert-Manager
 We will use cert-manager as central certificate manager for all certificates in the cluster. You can find more about cert-manager on the official [cert-manager](https://cert-manager.io/) website.  
-Cert-Manager will use the [letsencrypt](https://letsencrypt.org/) service to issue certificates for the cluster. The certificates get validated through the dns01 acme challenge, described in the [dns-provider step](../../prerequisites/dns-provider/). 
+Cert-Manager will use the [letsencrypt](https://letsencrypt.org/) service to issue certificates for the cluster. The certificates get validated through the dns01 acme challenge, described in the [dns-provider step](../../../prerequisites/dns-provider/). 
 
 ## Prerequisites
 Similar to traefik we will also use helm to install cert-manager to our cluster. You need the helm repository from cert-manager added to your local machine. You can add the repository with the following command:
@@ -64,7 +64,7 @@ kubectl get pods --namespace cert-manager
 To issue certificates you need different resources. The certificate-issuer (company that issues the certificate), the certificate-request (what certificate you want to issue) and the certificate (the actual certificate). In this example we will first use the letsencrypt staging issuer to issue test certificates for the domains we want to use and switch to the letsencrypt production environment if everything works.
 
 ### Create Cloudflare Token
-As described in the [cloudflare step](../../prerequisites/dns-provider/#create-token) we've created a token for cloudflare to allow cert-manager to update the dns records. This token will be put into a kubernetes secret. 
+As described in the [cloudflare step](../../../prerequisites/dns-provider/#create-token) we've created a token for cloudflare to allow cert-manager to update the dns records. This token will be put into a kubernetes secret. 
 
 Create a new kubernetes secret with the following command:
 ```bash

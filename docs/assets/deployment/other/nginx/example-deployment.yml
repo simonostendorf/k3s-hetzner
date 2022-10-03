@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-volumeclaim
+spec:
+  storageClassName: hcloud-volumes
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+        - name: nginx-volume
+          persistentVolumeClaim:
+            claimName: nginx-volumeclaim
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        volumeMounts:
+          - mountPath: "/usr/share/nginx/html"
+            name: nginx-volume
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - name: nginx-port
+    targetPort: 80
+    port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: test-example-com
+spec:
+  secretName: test-example-com-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "test.example.com"
+  dnsNames:
+  - "test.example.com"
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-ingressroute
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`test.example.com`)
+      kind: Rule
+      services:
+        - name: nginx-service
+          port: 80
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: test-example-com-tls
