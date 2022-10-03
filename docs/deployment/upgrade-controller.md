@@ -3,7 +3,7 @@ To upgrade the kubernetes cluster, we need to deploy the upgrade-controller. Thi
 
 You can download the latest version of the upgrade-controller deployment into the `deployments/upgrade-controller` folder on your local machine:
 ```bash
-curl https://github.com/rancher/system-upgrade-controller/releases/latest/download/system-upgrade-controller.yaml --create-dirs -L -o deployments/upgrade-controller/deployment.yml
+curl https://github.com/rancher/system-upgrade-controller/releases/latest/download/system-upgrade-controller.yaml --create-dirs -o deployments/upgrade-controller/deployment.yml
 ```
 
 You can deploy the upgrade-controller with the following command from your local machine:

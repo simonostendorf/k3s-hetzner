@@ -82,22 +82,20 @@ nav:
   - 'Deployment': 
       - 'deployment/index.md'
       - 'Required Components':
-          - 'Cloud Controller Manager': 'deployment/required/ccm.md'
-          - 'Metrics-Server': 'deployment/required/metrics-server.md'
-          - 'Cluster-Autoscaler': 'deployment/required/cluster-autoscaler.md'
-          - 'Cloud Storage Interface': 'deployment/required/csi.md'
-          - 'Ingress Controller': 'deployment/required/traefik.md'
-          - 'Cert-Manager': 'deployment/required/cert-manager.md'
-          - 'Upgrade Controller': 'deployment/required/upgrade-controller.md'
+          - 'Cloud Controller Manager': 'deployment/ccm.md'
+          - 'Metrics-Server': 'deployment/metrics-server.md'
+          - 'Cluster-Autoscaler': 'deployment/cluster-autoscaler.md'
+          - 'Cloud Storage Interface': 'deployment/csi.md'
+          - 'Ingress Controller': 'deployment/traefik.md'
+          - 'Cert-Manager': 'deployment/cert-manager.md'
+          - 'Upgrade Controller': 'deployment/upgrade-controller.md'
       - 'Other Components':
-          - 'Horizontal Pod Autoscaler': 'deployment/other/hpa.md'
-          - 'Example Nginx': 'deployment/other/nginx.md'
+          - 'Horizontal Pod Autoscaler': 'deployment/hpa.md'
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets:
-      base_path: 'docs/'
+  - pymdownx.snippets
   - pymdownx.superfences
   - admonition
   - pymdownx.details

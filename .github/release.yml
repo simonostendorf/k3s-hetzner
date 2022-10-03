@@ -12,9 +12,6 @@ changelog:
     - title: Removed
       labels:
         - deprecated
-    - title: Dependencies
-      labels:
-        - dependencies
     - title: Other Changes
       labels:
         - "*"
