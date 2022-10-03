@@ -232,6 +232,6 @@ kubectl apply -f deployments/traefik/dashboard-ingressroute.yml
 
 !!! warning "Remember"
     Remember to add your dns-record to your dns-provider and point it to the loadbalancer ip address.
-    It was referenced in the [dns-provider setup](../../prerequisites/dns-provider/#setup-sites-and-dns-records) early.
+    It was referenced in the [dns-provider setup](../../../prerequisites/dns-provider/#setup-sites-and-dns-records) early.
 
 Connect to your traefik domain (in this example `traefik.example.com`) and login with your basic auth credentials you've setup in [the previous step](#create-basic-auth). You should see the traefik dashboard with the default middlewares and services. 

@@ -16,7 +16,7 @@ Create the following cloud-init configuration:
     Please replace `YOUR_TIMEZONE` with your timezone used for the servers before.
     You also have to replace `YOUR_HETZNER_TOKEN` with your hetzner token. In this example the token is named `cluster-autoscaler`
     Also replace `YOUR_NETWORK_ID` with your network id of the private network. You looked up the network id in a previous step but you can also look it up with `hcloud network list`.
-    Replace `YOUR_K3S_TOKEN` with your k3s token, created in the [k3s-setup step](../../installation/k3s/#token).
+    Replace `YOUR_K3S_TOKEN` with your k3s token, created in the [k3s-setup step](../../../installation/k3s/#token).
 
 ```yaml linenums="1" hl_lines="6 9 11"
 #cloud-config
@@ -72,7 +72,7 @@ kubectl apply -f deployments/cluster-autoscaler/secret.yml
 ```
 
 ## Create autoscaler Image
-As described in [the preparation step](../../prerequisites/local-machine/#go) we need to create a custom image for the cluster-autoscaler using go. 
+As described in [the preparation step](../../../prerequisites/local-machine/#go) we need to create a custom image for the cluster-autoscaler using go. 
 Clone the autoscaler git repository into a new folder using the following command:
 ```bash
 git clone https://github.com/kubernetes/autoscaler
@@ -82,7 +82,7 @@ cd autoscaler/cluster-autoscaler
 Start the build process with the following commands:
 
 !!! danger "Replace values"
-    You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../prerequisites/container-registry/#create-account).
+    You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../../prerequisites/container-registry/#create-account).
 
 ```bash
 make build-in-docker
@@ -92,7 +92,7 @@ docker build -t DOCKER_USERNAME/k8s-cluster-autoscaler:latest -f Dockerfile.amd6
 Push the created docker-image to your docker registry with the following command:
 
 !!! danger "Replace values"
-    You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../prerequisites/container-registry/#create-account).
+    You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../../prerequisites/container-registry/#create-account).
 
 ```bash
 docker push DOCKER_USERNAME/k8s-cluster-autoscaler:latest
@@ -108,8 +108,8 @@ To pull the custom image from the docker registry we need to create a secret ins
 You can create the secret from the commandline with the following command:
 
 !!! danger "Replace values"
-    You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../prerequisites/container-registry/#create-account).
-    You have to replace `DOCKER_TOKEN` with your docker token, created in the [prerequisite step](../../prerequisites/container-registry/#create-token). Be shure to change the read-only token (named `k8s-hetzner` in this example)
+    You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../../prerequisites/container-registry/#create-account).
+    You have to replace `DOCKER_TOKEN` with your docker token, created in the [prerequisite step](../../../prerequisites/container-registry/#create-token). Be shure to change the read-only token (named `k8s-hetzner` in this example)
 
 ```bash
 kubectl create secret docker-registry -n kube-system dockerhub --docker-server=docker.io --docker-username=DOCKER_USERNAME --docker-password=DOCKER_TOKEN
@@ -160,7 +160,7 @@ name: dockerhub
 #            value: false
 ```
 
-1. Replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../prerequisites/container-registry/#create-account).
+1. Replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../../prerequisites/container-registry/#create-account).
 2. Configure the Node pools you want to use here. Example: 1 to 10 servers of type cx21 in hel-1
 3. Configure the Node pools you want to use here. Example: 1 to 10 servers of type cx21 in fsn-1
 4. Configure the Node pools you want to use here. Example: 1 to 10 servers of type cx21 in nbg-1
