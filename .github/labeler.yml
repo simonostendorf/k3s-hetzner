@@ -1,0 +1,11 @@
+documentation:
+- docs/*
+- CODE_OF_CONDUCT.md
+- CONTRIBUTING.md
+- README.md
+- mkdocs.yml
+- requirements.txt
+github_actions:
+- .github/workflows/*
+- .github/dependabot.yml
+- .github/labeler.yml
