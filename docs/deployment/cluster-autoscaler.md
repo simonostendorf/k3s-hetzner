@@ -126,50 +126,22 @@ Edit the file with the following command:
 nano deployments/cluster-autoscaler/deployment.yml
 ```
 
-Change the file contents to the following:
-```yaml linenums="1"
-# Uder spec.template.spec.containers[0].image replace the image with your own image
-DOCKER_USERNAME/k8s-cluster-autoscaler:latest #(1)!
+Run the following commands to replace the values in the deployment file:
 
-# Under spec.template.spec.containers[0].command add the following arguments: (after line 168 in this example)
-            - --nodes=1:10:CX21:HEL1:k8s-agent-hel1 #(2)!
-            - --nodes=1:10:CX21:FSN1:k8s-agent-fsn1 #(3)!
-            - --nodes=1:10:CX21:NBG1:k8s-agent-nbg1 #(4)!
-            - --scale-down-delay-after-add=30m0s #(5)!
-            - --scale-down-unneeded-time=30m0s #(6)!
-            - --scale-down-unready-time=10m0s #(7)!
+!!! warning "Remember"
+    Remember to replace `DOCKER_USERNAME` with your docker username created in the [prerequisite step](../../prerequisites/container-registry/#create-account).  
+    Remember to configure the node pools and timeouts to fit your needs.
 
-# Under spec.template.spec.containers[0].env replace the secret name with: (line 173 in this example)
-name: hetzner-cluster-autoscaler
-
-# Under spec.template.spec.containers[0].env replace the secret value with: (line 176 in this example)
-            valueFrom:
-                secretKeyRef:
-                  name: hetzner-cluster-autoscaler
-                  key: cloud-init
-
-# Under spec.template.spec.imagePullSecrets set the secret name with: (line 187 in this example)
-name: dockerhub
-
-# Under spec.template.spec.containers[0].env add the secret value with: (eg. after line 180 in this example)
-          - name: HCLOUD_IMAGE
-            value: debian-11
-
-# Under spec.template.spec.containers[0].env add the secret value with: (eg. after line 180 in this example)
-#          - name: HCLOUD_PUBLIC_IPV4 #(8)!
-#            value: false
+```bash
+sed -z --in-place "s|- image: k8s.gcr.io/autoscaling/cluster-autoscaler:latest  # or your custom image|- image: DOCKER_USERNAME/k8s-cluster-autoscaler:latest|g" deployments/cluster-autoscaler/deployment.yml
+sed -z --in-place "s|- --nodes=1:10:CPX11:FSN1:pool1|- --nodes=1:10:CX21:HEL1:k8s-agent-hel1\n            - --nodes=1:10:CX21:FSN1:k8s-agent-fsn1\n            - --nodes=1:10:CX21:NBG1:k8s-agent-nbg1\n            - --scale-down-delay-after-add=30m0s\n            - --scale-down-unneeded-time=30m0s\n            - --scale-down-unready-time=10m0s|g" deployments/cluster-autoscaler/deployment.yml
+sed -z --in-place "s|secretKeyRef:\n                  name: hcloud|secretKeyRef:\n                  name: hetzner-cluster-autoscaler|g" deployments/cluster-autoscaler/deployment.yml
+sed -z --in-place "s|HCLOUD_CLOUD_INIT\n            value: <your-cloud-init-data-base64-encoded>|HCLOUD_CLOUD_INIT\n            valueFrom:\n                secretKeyRef:\n                  name: hetzner-cluster-autoscaler\n                  key: cloud-init\n          - name: HCLOUD_IMAGE\n            value: debian-11|g" deployments/cluster-autoscaler/deployment.yml
+sed -z --in-place "s|name: gitlab-registry|name: dockerhub|g" deployments/cluster-autoscaler/deployment.yml
 ```
 
-1. Replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../prerequisites/container-registry/#create-account).
-2. Configure the Node pools you want to use here. Example: 1 to 10 servers of type cx21 in hel-1
-3. Configure the Node pools you want to use here. Example: 1 to 10 servers of type cx21 in fsn-1
-4. Configure the Node pools you want to use here. Example: 1 to 10 servers of type cx21 in nbg-1
-5. Configure the scale down timer here
-6. Configure the scale down timer here
-7. Configure the scale down timer here
-8. Set this to true if you want to use public ipv4 addresses
-
 !!! error "Attention"
+    Do not set the environment variable `HCLOUD_PUBLIC_IPV4`!
     The hetzner cloud-api is only available via IPv4.
     The nodes have to reach the cloud-api because they run a python-script at boot to assign the correct private ip. 
     You can find more information about this in the [hetzner github issue](https://github.com/hetznercloud/hcloud-cloud-controller-manager/issues/299).
