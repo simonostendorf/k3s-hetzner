@@ -82,12 +82,12 @@ To create the servers for the control-plane, run the following commands on your 
     You have to replace the `--ssh-key SSH_KEY_NAME` with your ssh-key name you have uploaded in the prerequisite step.
     If you want to use **more than one ssh-key**, you can specify the ssh-key **parameter multiple times**.
 
-```bash
+```bash hl_lines="5 16 27"
 # Create server for control-plane in hel-1
 hcloud server create \
 --datacenter hel1-dc2 \
 --image debian-11 \
---ssh-key SSH_KEY_NAME \ #(1)!
+--ssh-key SSH_KEY_NAME \
 --type cx21 \
 --placement-group k8s-control_plane-hel1 \
 --name k8s-controlplane-hel1-1 \
@@ -98,7 +98,7 @@ hcloud server create \
 hcloud server create \
 --datacenter fsn1-dc14 \
 --image debian-11 \
---ssh-key SSH_KEY_NAME \ #(2)!
+--ssh-key SSH_KEY_NAME \
 --type cx21 \
 --placement-group k8s-control_plane-fsn1 \
 --name k8s-controlplane-fsn1-1 \
@@ -109,17 +109,13 @@ hcloud server create \
 hcloud server create \
 --datacenter nbg1-dc3 \
 --image debian-11 \
---ssh-key SSH_KEY_NAME \ #(3)!
+--ssh-key SSH_KEY_NAME \
 --type cx21 \
 --placement-group k8s-control_plane-nbg1 \
 --name k8s-controlplane-nbg1-1 \
 --label k8s-role=control_plane \
 --label location=nbg1
 ```
-
-1. Replace `SSH_KEY_NAME` with your ssh-key name you have uploaded in the prerequisite step.
-2. Replace `SSH_KEY_NAME` with your ssh-key name you have uploaded in the prerequisite step.
-3. Replace `SSH_KEY_NAME` with your ssh-key name you have uploaded in the prerequisite step.
 
 The commands will create a control plane node in each hetzner location with...
 
