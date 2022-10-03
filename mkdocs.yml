@@ -91,11 +91,13 @@ nav:
           - 'Upgrade Controller': 'deployment/required/upgrade-controller.md'
       - 'Other Components':
           - 'Horizontal Pod Autoscaler': 'deployment/other/hpa.md'
+          - 'Example Nginx': 'deployment/other/nginx.md'
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path: 'docs/'
   - pymdownx.superfences
   - admonition
   - pymdownx.details
