@@ -3,7 +3,7 @@ The first step is to deploy the cloud-controller-manager. This piece of software
 
 ## Setup Secret
 The first step is to create a kubernetes secret with our cloud api token that the cloud-controller-manager will use to authenticate against the hetzner cloud api.  
-We have created the token in [the preparation step](../../prerequisites/hetzner/#create-api-tokens).  
+We have created the token in [the preparation step](../../../prerequisites/hetzner/#create-api-tokens).  
 In my example configuration I have named the token `cloud-controller-manager` in the hetzner cloud. 
 
 You also need the network-id from your private network. To get the id you can either copy the id from the hetzner cloud webinterface or copy the id from the following command:
