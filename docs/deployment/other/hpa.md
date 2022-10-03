@@ -5,8 +5,8 @@ The example is based on the example of [The DevOpy Guy](https://github.com/marce
 ## Example Application
 Download the example application and the traffic generator files into the `deployments/hpa` folder on your local machine:
 ```bash
-curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/deployment.yaml --create-dirs -o deployments/hpa/example-deployment-application.yml
-curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/traffic-generator.yaml --create-dirs -o deployments/hpa/example-deployment-traffic.yml
+curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/deployment.yaml --create-dirs -L -o deployments/hpa/example-deployment-application.yml
+curl https://raw.githubusercontent.com/marcel-dempers/docker-development-youtube-series/master/kubernetes/autoscaling/components/application/traffic-generator.yaml --create-dirs -L -o deployments/hpa/example-deployment-traffic.yml
 ```
 
 Apply both deployments to the cluster:
@@ -23,7 +23,7 @@ wrk -c 5 -t 5 -d 99999 -H "Connection: Close" http://application-cpu
 ```
 *This command will install wrk,a modern HTTP benchmarking tool capable of generating load. The command will generate 5 concurrent connections with 5 threads for 99999 seconds. The load will be generated against the application-cpu service.*
 
-With the following command you can the the top resource consuming pods:
+With the following command you can see the top resource consuming pods:
 ```bash
 kubectl top pods
 ```

@@ -4,12 +4,12 @@ You can find more about the driver on the official [hetzner-csi](https://github.
 
 ## Setup Secret
 Similar to the cloud-controller-manager in a previous step, we have to create a secret for the cloud-storage-interface. 
-We have created the token in [the preparation step](../../prerequisites/hetzner/#create-api-tokens).  
+We have created the token in [the preparation step](../../../prerequisites/hetzner/#create-api-tokens).  
 In my example configuration I have named the token `cloud-storage-interface` in the hetzner cloud. 
 
 Create a new deployment file:
 ```bash
-touch deployments/csi/secret.yml
+mkdir -p deployments/csi
 nano deployments/csi/secret.yml
 ```
 
@@ -34,7 +34,7 @@ kubectl apply -f deployments/csi/secret.yml
 ## Deploy hcloud-csi
 Download the latest version of the storage driver deployment into the `deployments/csi` folder on your local machine:
 ```bash
-curl https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml --create-dirs -o deployments/csi/deployment.yml
+curl https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml --create-dirs -L -o deployments/csi/deployment.yml
 ```
 
 Edit the deployment file and replace the secret name. You can use the following command to do this:

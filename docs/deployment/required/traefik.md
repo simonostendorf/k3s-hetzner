@@ -16,7 +16,7 @@ kubectl create namespace traefik
 ## Configure Helm Values
 Create a new helm values file for traefik with the following command:
 ```bash
-touch deployments/traefik/values.yml
+mkdir -p deployments/traefik
 nano deployments/traefik/values.yml
 ```
 
@@ -68,6 +68,7 @@ service:
   type: LoadBalancer
   annotations: {
     load-balancer.hetzner.cloud/name: "k8s-ingress", #(1)!
+    load-balancer.hetzner.cloud/location: "nbg1",
     load-balancer.hetzner.cloud/use-private-ip: true
   }
   labels: {}
@@ -91,7 +92,7 @@ kubectl get svc --all-namespaces -o wide
 ## Setup default Middleware
 Create a new middleware file for traefik with the following command:
 ```bash
-touch deployments/traefik/default-middleware.yml
+mkdir -p deployments/traefik
 nano deployments/traefik/default-middleware.yml
 ```
 
@@ -137,7 +138,7 @@ htpasswd -nb USERNAME PASSWORD | openssl base64 #(1)!
 
 Create a new secret file for traefik with the following command:
 ```bash
-touch deployments/traefik/dashboard-secret.yml
+mkdir -p deployments/traefik
 nano deployments/traefik/dashboard-secret.yml
 ```
 
@@ -165,7 +166,7 @@ To connect the traefik dashboard with the basic auth created in the previous ste
 
 Create a new middleware file for traefik with the following command:
 ```bash
-touch deployments/traefik/dashboard-middleware.yml
+mkdir -p deployments/traefik
 nano deployments/traefik/dashboard-middleware.yml
 ```
 
@@ -191,7 +192,7 @@ To serve traffic to the dashboard we need to create an IngressRoute.
 
 Create a new ingressroute file for traefik with the following command:
 ```bash
-touch deployments/traefik/dashboard-ingressroute.yml
+mkdir -p deployments/traefik
 nano deployments/traefik/dashboard-ingressroute.yml
 ```
 
@@ -228,5 +229,9 @@ Apply the ingress route to the cluster with the following command:
 ```bash
 kubectl apply -f deployments/traefik/dashboard-ingressroute.yml
 ```
+
+!!! warning "Remember"
+    Remember to add your dns-record to your dns-provider and point it to the loadbalancer ip address.
+    It was referenced in the [dns-provider setup](../../../prerequisites/dns-provider/#setup-sites-and-dns-records) early.
 
 Connect to your traefik domain (in this example `traefik.example.com`) and login with your basic auth credentials you've setup in [the previous step](#create-basic-auth). You should see the traefik dashboard with the default middlewares and services. 
