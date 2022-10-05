@@ -1,6 +1,8 @@
 # Home
 
-<img src="https://cncf-branding.netlify.app/img/projects/k3s/horizontal/color/k3s-horizontal-color.svg" alt="k3s logo" width="200"/>
+<img src="https://cncf-branding.netlify.app/img/projects/k3s/horizontal/color/k3s-horizontal-color.svg" alt="k3s-logo" width="150"/>
+<img src="../../assets/home/meets.png" alt="meets" width="130"/>
+<img src="https://www.hetzner.com/assets/Uploads/hetzner-logo3.svg" alt="Hetzner-logo" width="370"/>
 
 ## Introduction
 In this documentation you will find a step by step solution to deploy a high-available, auto scalable and loadbalanced [k3s](https://k3s.io/) cluster to servers inside the Hetzner-Cloud.  
@@ -34,3 +36,7 @@ This guide covers:
 ## Files
 By following this guide you will need deployment files to change them to fit your needs and to deploy them to your cluster.  
 You will find the the original files references in the download command. 
+
+## Disclaimer
+This guide is not an official guide from Hetzner or k3s.  
+If you want help, do not contant the official support of Hetzner or k3s. Instead you can open an issue in the [github repository](https://github.com/simonostendorf/k3s-hetzner/issues).
