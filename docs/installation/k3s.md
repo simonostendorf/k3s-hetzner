@@ -50,6 +50,9 @@ INSTALL_K3S_EXEC="server \
 
 This installation disables or customises many parameters to fit the needs of this setup.
 
+!!! error "Attention"
+    You have to wait for the loadbalancer to report the status "mixed". So that the loadbalancer is ready to accept traffic. Otherwise the installation of the other nodes will fail because they cant communicate with the cluster. 
+
 ### Install other Servers
 To install k3s on the other controlplane nodes (in this example control-plane-hel1-1 and control-plane-ngb1-1), run the following command on the server:
 
