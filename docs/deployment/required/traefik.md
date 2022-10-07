@@ -67,8 +67,8 @@ service:
   enabled: true
   type: LoadBalancer
   annotations: {
-    load-balancer.hetzner.cloud/name: "k8s-ingress", #(1)!
-    load-balancer.hetzner.cloud/location: "nbg1",
+    load-balancer.hetzner.cloud/name: k8s-ingress #(1)!
+    load-balancer.hetzner.cloud/location: nbg1
     load-balancer.hetzner.cloud/use-private-ip: true
   }
   labels: {}
@@ -88,6 +88,15 @@ To validate all running services in the cluster, run the following command:
 ```bash
 kubectl get svc --all-namespaces -o wide
 ```
+
+!!! warning "Attention"
+    You need to check if the loadbalancer is connected with the k8s-service. View the annotations of the service with `kubectl describe service traefik -n traefik` and check the annotations. You should see the annotations given in the helm-values file.  
+    If there are no annotations, you have to add them manually with the following commands:
+    ```bash
+    kubectl annotate service traefik load-balancer.hetzner.cloud/use-private-ip=true -n traefik
+    kubectl annotate service traefik load-balancer.hetzner.cloud/name=k8s-ingress -n traefik
+    kubectl annotate service traefik load-balancer.hetzner.cloud/location=nbg1 -n traefik
+    ```
 
 ## Setup default Middleware
 Create a new middleware file for traefik with the following command:
