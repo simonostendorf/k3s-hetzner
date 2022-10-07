@@ -224,37 +224,9 @@ kubectl delete -f deployments/cert-manager/example-com-staging-tls.yml --namespa
 The setup will be similar to the staging environment. Copy the staging issuer file:
 ```bash
 cp deployments/cert-manager/letsencrypt-staging-issuer.yml deployments/cert-manager/letsencrypt-production-issuer.yml
-nano deployments/cert-manager/letsencrypt-production-issuer.yml
+sed -i 's/letsencrypt-staging/letsencrypt-production/g' deployments/cert-manager/letsencrypt-production-issuer.yml
+sed -i 's/-staging-/-/g' deployments/cert-manager/letsencrypt-production-issuer.yml
 ```
-
-Edit the file and replace the following values:
-
-```yaml linenums="1"
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-production #(1)!
-spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory #(2)!
-    email: your_email_should_already_be_here
-    privateKeySecretRef:
-      name: letsencrypt-production #(3)!
-    solvers:
-      - dns01:
-          cloudflare:
-            email: your_email_should_already_be_here
-            apiTokenSecretRef:
-              name: cloudflare-token-secret
-              key: cloudflare-token
-        selector:
-          dnsZones:
-            - your_dns_names_should_already_be_here
-```
-
-1. Replace `letsencrypt-staging` with `letsencrypt-production`.
-2. Replace the old staging endpoint with the new one: `https://acme-v02.api.letsencrypt.org/directory`.
-3. Replace `letsencrypt-staging` with `letsencrypt-production`.
 
 Apply the issuer to the cluster with the following command:
 ```bash
