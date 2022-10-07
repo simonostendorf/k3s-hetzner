@@ -109,7 +109,7 @@ You can create the secret from the commandline with the following command:
 
 !!! danger "Replace values"
     You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../../prerequisites/container-registry/#create-account).
-    You have to replace `DOCKER_TOKEN` with your docker token, created in the [prerequisite step](../../../prerequisites/container-registry/#create-token). Be shure to change the read-only token (named `k8s-hetzner` in this example)
+    You have to replace `DOCKER_TOKEN` with your docker token, created in the [prerequisite step](../../../prerequisites/container-registry/#create-token). Be shure to choose the read-only token (named `k8s-hetzner` in this example)
 
 ```bash
 kubectl create secret docker-registry -n kube-system dockerhub --docker-server=docker.io --docker-username=DOCKER_USERNAME --docker-password=DOCKER_TOKEN
