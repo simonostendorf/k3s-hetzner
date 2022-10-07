@@ -13,8 +13,8 @@ You can name the subdomain whatever you want, i will keep it test in this scenar
 ## Create deployment
 Create a new file on your machine with the following command:
 ```bash
-mkdir -p deployment/nginx
-nano deployment/nginx/example-deployment.yml
+mkdir -p deployments/nginx
+nano deployments/nginx/example-deployment.yml
 ```
 
 Fill the file with the following content. 
