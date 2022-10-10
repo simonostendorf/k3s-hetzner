@@ -29,7 +29,6 @@ kubectl get certificates
 ## Configure Helm Values
 Create a new helm values file for cert-manager with the following command:
 ```bash
-mkdir -p deployments/cert-manager
 nano deployments/cert-manager/values.yml
 ```
 
@@ -68,7 +67,6 @@ As described in the [cloudflare step](../../../prerequisites/dns-provider/#creat
 
 Create a new kubernetes secret with the following command:
 ```bash
-mkdir -p deployments/cert-manager
 nano deployments/cert-manager/cloudflare-secret.yml
 ```
 
@@ -97,7 +95,6 @@ As described previously we first use staging certificates to test our environmen
 #### Create CerificateIssuer
 Create a new certificate issuer with the following command:
 ```bash
-mkdir -p deployments/cert-manager
 nano deployments/cert-manager/letsencrypt-staging-issuer.yml
 ```
 
@@ -139,7 +136,6 @@ The next step is to create a certificate.
 
 Create a new certificate with the following command:
 ```bash
-mkdir -p deployments/cert-manager
 nano deployments/cert-manager/example-com-staging-tls.yml #(1)!
 ```
 
@@ -224,37 +220,9 @@ kubectl delete -f deployments/cert-manager/example-com-staging-tls.yml --namespa
 The setup will be similar to the staging environment. Copy the staging issuer file:
 ```bash
 cp deployments/cert-manager/letsencrypt-staging-issuer.yml deployments/cert-manager/letsencrypt-production-issuer.yml
-nano deployments/cert-manager/letsencrypt-production-issuer.yml
+sed -i 's/letsencrypt-staging/letsencrypt-production/g' deployments/cert-manager/letsencrypt-production-issuer.yml
+sed -i 's/-staging-/-/g' deployments/cert-manager/letsencrypt-production-issuer.yml
 ```
-
-Edit the file and replace the following values:
-
-```yaml linenums="1"
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-production #(1)!
-spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory #(2)!
-    email: your_email_should_already_be_here
-    privateKeySecretRef:
-      name: letsencrypt-production #(3)!
-    solvers:
-      - dns01:
-          cloudflare:
-            email: your_email_should_already_be_here
-            apiTokenSecretRef:
-              name: cloudflare-token-secret
-              key: cloudflare-token
-        selector:
-          dnsZones:
-            - your_dns_names_should_already_be_here
-```
-
-1. Replace `letsencrypt-staging` with `letsencrypt-production`.
-2. Replace the old staging endpoint with the new one: `https://acme-v02.api.letsencrypt.org/directory`.
-3. Replace `letsencrypt-staging` with `letsencrypt-production`.
 
 Apply the issuer to the cluster with the following command:
 ```bash
@@ -266,7 +234,6 @@ Now we will create separate certificates for traefik and all other pods. In this
 
 Create a new certificate with the following command:
 ```bash
-mkdir -p deployments/cert-manager
 nano deployments/cert-manager/traefik-example-com-tls.yml #(1)!
 ```
 
