@@ -24,6 +24,6 @@ You will need to create the following tokens:
 
 If you want to use private images you also need to create a token for the cluster to pull the images: 
 
-  * `k8s-hetzner` with **read-access** used on the kubernetes hosts to pull the images from the container registry
+  * `k3s-hetzner` with **read-access** used on the kubernetes hosts to pull the images from the container registry
 
 <img src="../../assets/prerequisites/container-repository/create-token.png" width=60%>

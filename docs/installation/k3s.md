@@ -97,7 +97,7 @@ For the authentication between your local machine and the k3s cluster, kubectl u
 Run the following command on your local machine to copy the kubeconfig file from one of the controlplane hosts to your local machine:
 
 !!! warning "Replace values"
-    Please replace the `CONTROLPLANE_PUBLIC_IP_HERE` with the public ip of one of the controlplane hosts (for example k8s-controlplane-hel1-1).
+    Please replace the `CONTROLPLANE_PUBLIC_IP_HERE` with the public ip of one of the controlplane hosts (for example k3s-controlplane-hel1-1).
 
 ```bash
 scp root@CONTROLPLANE_PUBLIC_IP_HERE:/etc/rancher/k3s/k3s.yaml ~/.kube/config
