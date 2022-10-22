@@ -7,7 +7,7 @@ First install all updates on the servers. To do this, run the following commands
 
 !!! warning
     You have to do this on all servers, created in the previous step.  
-    In this guide you will have to do this on 3 servers (`k8s-controlplane-hel1-1`, `k8s-controlplane-fsn1-1` and `k8s-controlplane-nbg1-1`)
+    In this guide you will have to do this on 3 servers (`k3s-controlplane-hel1-1`, `k3s-controlplane-fsn1-1` and `k3s-controlplane-nbg1-1`)
 
 ```bash
 apt update
@@ -19,7 +19,7 @@ Set the correct timezone on all servers. Do this by running the following comman
 
 !!! warning
     You have to do this on all servers, created in the previous step.  
-    In this guide you will have to do this on 3 servers (`k8s-controlplane-hel1-1`, `k8s-controlplane-fsn1-1` and `k8s-controlplane-nbg1-1`)
+    In this guide you will have to do this on 3 servers (`k3s-controlplane-hel1-1`, `k3s-controlplane-fsn1-1` and `k3s-controlplane-nbg1-1`)
 
 !!! danger "Replace values"
     You have to replace `YOUR_TIMEZONE` with your timezone.
@@ -36,7 +36,7 @@ To do this, run the following commands on all servers:
 
 !!! warning
     You have to do this on all servers, created in the previous step.  
-    In this guide you will have to do this on 3 servers (`k8s-controlplane-hel1-1`, `k8s-controlplane-fsn1-1` and `k8s-controlplane-nbg1-1`)
+    In this guide you will have to do this on 3 servers (`k3s-controlplane-hel1-1`, `k3s-controlplane-fsn1-1` and `k3s-controlplane-nbg1-1`)
 
 ```bash
 apt install apparmor apparmor-utils -y #(1)!

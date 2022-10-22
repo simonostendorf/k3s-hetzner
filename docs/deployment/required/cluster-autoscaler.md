@@ -109,7 +109,7 @@ You can create the secret from the commandline with the following command:
 
 !!! danger "Replace values"
     You have to replace `DOCKER_USERNAME` with your docker username, created in the [prerequisite step](../../../prerequisites/container-registry/#create-account).
-    You have to replace `DOCKER_TOKEN` with your docker token, created in the [prerequisite step](../../../prerequisites/container-registry/#create-token). Be shure to choose the read-only token (named `k8s-hetzner` in this example)
+    You have to replace `DOCKER_TOKEN` with your docker token, created in the [prerequisite step](../../../prerequisites/container-registry/#create-token). Be shure to choose the read-only token (named `k3s-hetzner` in this example)
 
 ```bash
 kubectl create secret docker-registry -n kube-system dockerhub --docker-server=docker.io --docker-username=DOCKER_USERNAME --docker-password=DOCKER_TOKEN
@@ -139,7 +139,7 @@ Run the following commands to replace the values in the deployment file:
 
 ```bash
 sed -z --in-place "s|- image: k8s.gcr.io/autoscaling/cluster-autoscaler:latest  # or your custom image|- image: DOCKER_USERNAME/k8s-cluster-autoscaler:latest|g" deployments/cluster-autoscaler/deployment.yml
-sed -z --in-place "s|- --nodes=1:10:CPX11:FSN1:pool1|- --nodes=1:10:CX21:HEL1:k8s-agent-hel1\n            - --nodes=1:10:CX21:FSN1:k8s-agent-fsn1\n            - --nodes=1:10:CX21:NBG1:k8s-agent-nbg1\n            - --scale-down-delay-after-add=10m0s\n            - --scale-down-unneeded-time=10m0s\n            - --scale-down-unready-time=5m0s\n            - --balance-similar-node-groups=true|g" deployments/cluster-autoscaler/deployment.yml
+sed -z --in-place "s|- --nodes=1:10:CPX11:FSN1:pool1|- --nodes=1:10:CX21:HEL1:k3s-agent-hel1\n            - --nodes=1:10:CX21:FSN1:k3s-agent-fsn1\n            - --nodes=1:10:CX21:NBG1:k3s-agent-nbg1\n            - --scale-down-delay-after-add=10m0s\n            - --scale-down-unneeded-time=10m0s\n            - --scale-down-unready-time=5m0s\n            - --balance-similar-node-groups=true|g" deployments/cluster-autoscaler/deployment.yml
 sed -z --in-place "s|secretKeyRef:\n                  name: hcloud|secretKeyRef:\n                  name: hetzner-cluster-autoscaler|g" deployments/cluster-autoscaler/deployment.yml
 sed -z --in-place "s|HCLOUD_CLOUD_INIT\n            value: <your-cloud-init-data-base64-encoded>|HCLOUD_CLOUD_INIT\n            valueFrom:\n                secretKeyRef:\n                  name: hetzner-cluster-autoscaler\n                  key: cloud-init\n          - name: HCLOUD_IMAGE\n            value: debian-11|g" deployments/cluster-autoscaler/deployment.yml
 sed -z --in-place "s|name: gitlab-registry|name: dockerhub|g" deployments/cluster-autoscaler/deployment.yml
