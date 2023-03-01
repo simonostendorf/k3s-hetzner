@@ -23,8 +23,8 @@ This guide covers:
     * Install all required packages to the hosts and configure them properly
     * Automatic install and configuration of k3s with one single command
   * Deployment
-    * Deploy the hetzner [cloud-controller-manager](https://github.com/hetznercloud/hcloud-cloud-controller-manager/) to the cluster to integrate the hetzner api into the k8s cluster
-    * Deploy the hetzner [container-storage-interface](https://github.com/hetznercloud/csi-driver) to the cluster to use hetzner cloud volumes as persistent volume claim inside k8s
+    * Deploy the hetzner [cloud-controller-manager](https://github.com/hetznercloud/hcloud-cloud-controller-manager/) to the cluster to integrate the hetzner api into the k3s cluster
+    * Deploy the hetzner [container-storage-interface](https://github.com/hetznercloud/csi-driver) to the cluster to use hetzner cloud volumes as persistent volume claim inside k3s
     * Deploy the [cluster-autoscaler](https://github.com/kubernetes/autoscaler/) to the cluster and configure it to use hetzner cloud servers for automatic scaleup and scaledown of nodes
     * Deploy the [metrics-server](https://github.com/kubernetes-sigs/metrics-server) to get metrics from pods and nodes and enable autoscaling of nodes and pods
     * Deploy the [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller) to use automated upgrade plans
